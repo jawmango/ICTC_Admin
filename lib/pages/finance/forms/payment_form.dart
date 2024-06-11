@@ -105,7 +105,7 @@ class _PaymentFormState extends State<PaymentForm> {
       selectedDate = pickedDate;
       orDateCon.text = DateFormat.yMMMMd().format(pickedDate);
     });
-
+  }
 
 // PROGRAMS
   Future<List<Program>> fetchPrograms({String? filter}) async {
@@ -578,8 +578,7 @@ class _PaymentFormState extends State<PaymentForm> {
           }),
         ),
         onPressed: () {
-
-            final supabase = Supabase.instance.client;
+          final supabase = Supabase.instance.client;
           final id = widget.payment!.id!;
 
           supabase.from('payment').delete().eq('id', id).whenComplete(() {
@@ -591,9 +590,7 @@ class _PaymentFormState extends State<PaymentForm> {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("An error occured.")));
           });
-
         },
-
         child: const Text(
           "Delete",
           style: TextStyle(color: Colors.black87),

@@ -57,21 +57,6 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
         .select()
         .eq('student_id', widget.trainee.id!)
         .withConverter((data) {
-      print(data);
-      return data.map((e) => Register.fromJson(e)).toList();
-    });
-
-    super.initState();
-  }
-
-
-  @override
-  void initState() {
-    courseStudents = Supabase.instance.client
-        .from('registration')
-        .select()
-        .eq('student_id', widget.trainee.id!)
-        .withConverter((data) {
           print(data);
           return data.map((e) => Register.fromJson(e)).toList();
         });
@@ -270,33 +255,6 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
       // ),
     );
   }
-Widget buildCourses(List<Register> register) {
-  return Flexible(
-    flex: 8,
-    child: Container(
-      padding: const EdgeInsets.only(top: 0, left: 25, right: 25),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            softWrap: true,
-            //name
-            "Courses",
-            style: TextStyle(
-                fontSize: 16,
-                color: Colors.black87,
-                fontWeight: FontWeight.w600),
-          ),
-          const SizedBox(
-            height: 15,
-          ),
-          Expanded(
-            flex: 2,
-            child: ListView.builder(
-              itemBuilder: (context, index) {
-                final registerItem = register[index];
-
   Widget buildCourses(List<Register> register) {
     return Flexible(
       flex: 8,
@@ -344,7 +302,7 @@ Widget buildCourses(List<Register> register) {
           ],
         ),
       ),
-    ),
+    
   );
 }
 
