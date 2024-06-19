@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:async/async.dart';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ictc_admin/models/report.dart';
 import 'package:ictc_admin/pages/reports/report_details.dart';
 import 'package:intl/intl.dart';
@@ -35,16 +36,62 @@ class _ReportTableState extends State<ReportTable> {
         .saveFile(name: "$title.csv", ext: ".csv", bytes: exported);
   }
 
+  void exportToPdf() async {
+    final themeData = pluto_grid_plus_export.ThemeData.withFont(
+      base: pluto_grid_plus_export.Font.ttf(
+        await rootBundle.load('assets/fonts/Archivo-Regular.ttf'),
+      ),
+      bold: pluto_grid_plus_export.Font.ttf(
+        await rootBundle.load('assets/fonts/Archivo-Bold.ttf'),
+      ),
+    );
+
+    var plutoGridPdfExport = pluto_grid_plus_export.PlutoGridDefaultPdfExport(
+      title: "ADNU ICTC Monthly Report",
+      creator: "ICTC Office",
+      format: pluto_grid_plus_export.PdfPageFormat.a4.landscape,
+      themeData: themeData,
+    );
+
+    await pluto_grid_plus_export.Printing.sharePdf(
+      bytes: await plutoGridPdfExport.export(stateManager),
+      filename: plutoGridPdfExport.getFilename(),
+    );
+  }
+  
+  Widget csvButton() {
+    return ElevatedButton(
+        onPressed: _defaultExportGridAsCSV, child: const Text("Export to CSV"));
+  }
+
+  Widget pdfButton() {
+    return ElevatedButton(
+        onPressed: exportToPdf, child: const Text("Export to PDF"));
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xfff1f5fb),
-      body: Expanded(
+    return Row(
+      children: [
+        Flexible(
+          flex: 1,
           child: Column(
-        children: [
-          buildDataTable(),
-        ],
-      )),
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Container(
+                // margin: EdgeInsets.symmetric(horizontal: 100),
+                padding: const EdgeInsets.only(top: 20),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [pdfButton()],
+                ),
+              ),
+              buildDataTable(),
+            ],
+          ),
+        ),
+      ],
     );
   }
 

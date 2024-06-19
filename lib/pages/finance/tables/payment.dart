@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/payment.dart';
 import 'package:ictc_admin/models/program.dart';
@@ -59,6 +60,29 @@ class _PaymentTableState extends State<PaymentTable> {
 
   late PlutoGridStateManager stateManager;
 
+void exportToPdf() async {
+    final themeData = pluto_grid_plus_export.ThemeData.withFont(
+      base: pluto_grid_plus_export.Font.ttf(
+        await rootBundle.load('assets/fonts/Archivo-Regular.ttf'),
+      ),
+      bold: pluto_grid_plus_export.Font.ttf(
+        await rootBundle.load('assets/fonts/Archivo-Bold.ttf'),
+      ),
+    );
+
+    var plutoGridPdfExport = pluto_grid_plus_export.PlutoGridDefaultPdfExport(
+      title: "ADNU ICTC Income Report",
+      creator: "ICTC Office",
+      format: pluto_grid_plus_export.PdfPageFormat.a4.landscape,
+      themeData: themeData,
+    );
+
+    await pluto_grid_plus_export.Printing.sharePdf(
+      bytes: await plutoGridPdfExport.export(stateManager),
+      filename: plutoGridPdfExport.getFilename(),
+    );
+  }
+
   void _defaultExportGridAsCSV() async {
     String title = "pluto_grid_plus_export";
     var exported = const Utf8Encoder().convert(
@@ -82,7 +106,7 @@ class _PaymentTableState extends State<PaymentTable> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [addButton(), csvButton()],
+                  children: [addButton(), csvButton(), pdfButton()],
                 ),
               ),
               buildInDataTable(),
@@ -96,6 +120,11 @@ class _PaymentTableState extends State<PaymentTable> {
   Widget csvButton() {
     return ElevatedButton(
         onPressed: _defaultExportGridAsCSV, child: const Text("Export to CSV"));
+  }
+
+Widget pdfButton() {
+    return ElevatedButton(
+        onPressed: exportToPdf, child: const Text("Export to PDF"));
   }
 
   Widget editButton(Payment payment) {
