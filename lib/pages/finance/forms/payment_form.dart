@@ -105,7 +105,7 @@ class _PaymentFormState extends State<PaymentForm> {
       selectedDate = pickedDate;
       orDateCon.text = DateFormat.yMMMMd().format(pickedDate);
     });
-
+  }
 
 // PROGRAMS
   Future<List<Program>> fetchPrograms({String? filter}) async {

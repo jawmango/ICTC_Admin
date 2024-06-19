@@ -7,12 +7,12 @@ part of 'course.dart';
 // **************************************************************************
 
 Course _$CourseFromJson(Map<String, dynamic> json) => Course(
-      id: json['id'] as int?,
-      programId: json['program_id'] as int?,
-      trainerId: json['trainer_id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
+      programId: (json['program_id'] as num?)?.toInt(),
+      trainerId: (json['trainer_id'] as num?)?.toInt(),
       title: json['title'] as String,
       description: json['description'] as String?,
-      cost: json['cost'] as int,
+      cost: (json['cost'] as num).toInt(),
       duration: json['duration'] as String?,
       schedule: json['schedule'] as String?,
       venue: json['venue'] as String?,

@@ -7,7 +7,7 @@ part of 'trainee.dart';
 // **************************************************************************
 
 Trainee _$TraineeFromJson(Map<String, dynamic> json) => Trainee(
-      id: json['id'] as int,
+      id: (json['id'] as num).toInt(),
       firstName: json['first_name'] as String,
       middleName: json['middle_name'] as String?,
       lastName: json['last_name'] as String,
@@ -16,7 +16,7 @@ Trainee _$TraineeFromJson(Map<String, dynamic> json) => Trainee(
       school: json['school'] as String?,
       office: json['office'] as String?,
       designation: json['designation'] as String?,
-      yearLevel: json['year_level'] as int?,
+      yearLevel: (json['year_level'] as num?)?.toInt(),
       uuid: json['uuid'] as String?,
     )..course = json['course'] as String?;
 

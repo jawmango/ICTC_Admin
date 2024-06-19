@@ -7,7 +7,7 @@ part of 'trainer.dart';
 // **************************************************************************
 
 Trainer _$TrainerFromJson(Map<String, dynamic> json) => Trainer(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       firstName: json['first_name'] as String,
       middleName: json['middle_name'] as String?,
       lastName: json['last_name'] as String,

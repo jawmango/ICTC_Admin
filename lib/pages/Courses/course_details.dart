@@ -185,7 +185,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                       minWidth: 600,
                       horizontalMargin: 100,
                       columns: const [
-                        DataColumn(label: Text('Student Name')),
+                        DataColumn(label: Text('Name')),
                         DataColumn(label: Text('Email')),
                         DataColumn(label: Text('Payment Status')),
                         DataColumn(
@@ -207,7 +207,7 @@ class _CourseDetailsState extends State<CourseDetails> {
     );
   }
 
-  DataRow2 buildRow(Register register) {
+  DataRow2 buildRow(Register register) {  
     final studentId = register.studentId;
 
     return DataRow2(
@@ -258,7 +258,7 @@ class _CourseDetailsState extends State<CourseDetails> {
             }
           },
         )),
-        DataCell(
+        DataCell( //Payment
           ToggleSwitch(
             minWidth: 90.0,
             cornerRadius: 20.0,
@@ -297,7 +297,7 @@ class _CourseDetailsState extends State<CourseDetails> {
             },
           ),
         ),
-        DataCell(
+        DataCell( //eval
           ToggleSwitch(
             minWidth: 90.0,
             cornerRadius: 20.0,
@@ -308,12 +308,32 @@ class _CourseDetailsState extends State<CourseDetails> {
             activeFgColor: Colors.white,
             inactiveBgColor: Colors.white,
             inactiveFgColor: Color(0xff153faa).withOpacity(0.5),
-            initialLabelIndex: register.status ? 0 : 1,
+            initialLabelIndex: register.eval ? 0 : 1,
             totalSwitches: 2,
             labels: ['', ''],
             icons: [Icons.check, Icons.close],
             radiusStyle: true,
-            onToggle: (index) {
+            onToggle:  (index) {
+              setState(() {
+                register.eval = index == 0;
+              });
+
+              final updatedData = {
+                'eval_status': register.eval
+              }; // Update column name if needed
+
+              Supabase.instance.client
+                  .from('registration')
+                  .update(updatedData)
+                  .eq('id', register.id as Object)
+                  .then((_) {
+                // Update succeeded
+                print('Status updated successfully');
+              }).catchError((error) {
+                // Handle update error
+                print('Error updating status: $error');
+              });
+            },
               // setState(() {
               //   register.status = index == 0;
               // });
@@ -333,7 +353,6 @@ class _CourseDetailsState extends State<CourseDetails> {
               //   // Handle update error
               //   print('Error updating status: $error');
               // });
-            },
           ),
         ),
         DataCell(
@@ -347,31 +366,31 @@ class _CourseDetailsState extends State<CourseDetails> {
             activeFgColor: Colors.white,
             inactiveBgColor: Colors.white,
             inactiveFgColor: Color(0xff153faa).withOpacity(0.5),
-            initialLabelIndex: register.status ? 0 : 1,
+            initialLabelIndex: register.cert ? 0 : 1,
             totalSwitches: 2,
             labels: ['', ''],
             icons: [Icons.check, Icons.close],
             radiusStyle: true,
-            onToggle: (index) {
-              // setState(() {
-              //   register.status = index == 0;
-              // });
+            onToggle:  (index) {
+              setState(() {
+                register.cert = index == 0;
+              });
 
-              // final updatedData = {
-              //   'is_approved': register.status
-              // }; // Update column name if needed
+              final updatedData = {
+                'cert_status': register.cert
+              }; // Update column name if needed
 
-              // Supabase.instance.client
-              //     .from('registration')
-              //     .update(updatedData)
-              //     .eq('id', register.id as Object)
-              //     .then((_) {
-              //   // Update succeeded
-              //   print('Status updated successfully');
-              // }).catchError((error) {
-              //   // Handle update error
-              //   print('Error updating status: $error');
-              // });
+              Supabase.instance.client
+                  .from('registration')
+                  .update(updatedData)
+                  .eq('id', register.id as Object)
+                  .then((_) {
+                // Update succeeded
+                print('Status updated successfully');
+              }).catchError((error) {
+                // Handle update error
+                print('Error updating status: $error');
+              });
             },
           ),
         ),

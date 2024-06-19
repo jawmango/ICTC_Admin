@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
           size: 30,
         ),
         label: Text(
-          "Finance",
+          "Dashboard",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,

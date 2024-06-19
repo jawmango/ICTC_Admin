@@ -17,6 +17,12 @@ class Register {
   @JsonKey(name: 'is_approved')
   bool status;
 
+  @JsonKey(name: 'eval_status')
+  bool eval;
+
+  @JsonKey(name: 'cert_status')
+  bool cert;
+
   @JsonKey(name: 'payment_status')
   bool? paymentStatus;
 
@@ -25,6 +31,8 @@ class Register {
     required this.studentId,
     required this.courseId,
     required this.status,
+    this.eval = false,
+    this.cert = false,
     this.paymentStatus
   });
 
