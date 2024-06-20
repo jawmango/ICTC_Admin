@@ -71,7 +71,7 @@ class _MainScreenState extends State<MainScreen> {
     List<NavigationRailDestination> destinations = const [
       NavigationRailDestination(
         icon: Icon(
-          Icons.grid_view_outlined,
+          Icons.home_filled,
           color: Colors.white,
           size: 30,
         ),

@@ -187,13 +187,11 @@ class _CourseDetailsState extends State<CourseDetails> {
                       columns: const [
                         DataColumn(label: Text('Name')),
                         DataColumn(label: Text('Email')),
+                        DataColumn(label: Text('Billing Status')),
                         DataColumn(label: Text('Payment Status')),
-                        DataColumn(
-                            label: Text(
-                                'Evaluation Status')), // TODO: New ongoing and pending boolean for evalStatus
-                        DataColumn(
-                            label: Text(
-                                'Certificate Status')), //TODO: Query if paymentStatus == true && evalStatus == true, then certificateStatus = true
+                        DataColumn(label: Text('Attendance Status')),
+                        DataColumn(label: Text('Evaluation Status')), // TODO: New ongoing and pending boolean for evalStatus
+                        DataColumn(label: Text('Certificate Status')), //TODO: Query if paymentStatus == true && evalStatus == true, then certificateStatus = true
                       ],
                       rows: snapshot.data!
                           .map((register) => buildRow(register))
@@ -258,6 +256,47 @@ class _CourseDetailsState extends State<CourseDetails> {
             }
           },
         )),
+        
+        DataCell( //Billing
+          ToggleSwitch(
+            minWidth: 90.0,
+            cornerRadius: 20.0,
+            activeBgColors: [
+              [Color(0xff008744)!],
+              [Color(0xffffa700)!]
+            ],
+            activeFgColor: Colors.white,
+            inactiveBgColor: Colors.white,
+            inactiveFgColor: Color(0xff153faa).withOpacity(0.5),
+            initialLabelIndex: register.bill ? 0 : 1,
+            totalSwitches: 2,
+            labels: ['', ''],
+            icons: [Icons.check, Icons.close],
+            radiusStyle: true,
+            onToggle: (index) {
+              setState(() {
+                register.bill = index == 0;
+              });
+
+              final updatedData = {
+                'bill_status': register.bill
+              }; // Update column name if needed
+
+              Supabase.instance.client
+                  .from('registration')
+                  .update(updatedData)
+                  .eq('id', register.id as Object)
+                  .then((_) {
+                // Update succeeded
+                print('Status updated successfully');
+              }).catchError((error) {
+                // Handle update error
+                print('Error updating status: $error');
+              });
+            },
+          ),
+        ),
+
         DataCell( //Payment
           ToggleSwitch(
             minWidth: 90.0,
@@ -281,6 +320,45 @@ class _CourseDetailsState extends State<CourseDetails> {
 
               final updatedData = {
                 'is_approved': register.status
+              }; // Update column name if needed
+
+              Supabase.instance.client
+                  .from('registration')
+                  .update(updatedData)
+                  .eq('id', register.id as Object)
+                  .then((_) {
+                // Update succeeded
+                print('Status updated successfully');
+              }).catchError((error) {
+                // Handle update error
+                print('Error updating status: $error');
+              });
+            },
+          ),
+        ),
+        DataCell( //attendance
+          ToggleSwitch(
+            minWidth: 90.0,
+            cornerRadius: 20.0,
+            activeBgColors: [
+              [Color(0xff008744)!],
+              [Color(0xffffa700)!]
+            ],
+            activeFgColor: Colors.white,
+            inactiveBgColor: Colors.white,
+            inactiveFgColor: Color(0xff153faa).withOpacity(0.5),
+            initialLabelIndex: register.attend ? 0 : 1,
+            totalSwitches: 2,
+            labels: ['', ''],
+            icons: [Icons.check, Icons.close],
+            radiusStyle: true,
+            onToggle:  (index) {
+              setState(() {
+                register.attend = index == 0;
+              });
+
+              final updatedData = {
+                'attend_status': register.attend
               }; // Update column name if needed
 
               Supabase.instance.client
@@ -334,28 +412,9 @@ class _CourseDetailsState extends State<CourseDetails> {
                 print('Error updating status: $error');
               });
             },
-              // setState(() {
-              //   register.status = index == 0;
-              // });
-
-              // final updatedData = {
-              //   'is_approved': register.status
-              // }; // Update column name if needed
-
-              // Supabase.instance.client
-              //     .from('registration')
-              //     .update(updatedData)
-              //     .eq('id', register.id as Object)
-              //     .then((_) {
-              //   // Update succeeded
-              //   print('Status updated successfully');
-              // }).catchError((error) {
-              //   // Handle update error
-              //   print('Error updating status: $error');
-              // });
           ),
         ),
-        DataCell(
+        DataCell( //certificate
           ToggleSwitch(
             minWidth: 90.0,
             cornerRadius: 20.0,

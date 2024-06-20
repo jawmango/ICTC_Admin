@@ -9,6 +9,7 @@ import 'package:ictc_admin/models/program.dart';
 import 'package:ictc_admin/models/seeds.dart';
 import 'package:ictc_admin/models/trainee.dart';
 import 'package:ictc_admin/pages/finance/forms/payment_form.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 import 'package:pluto_grid_plus_export/pluto_grid_plus_export.dart'
     as pluto_grid_plus_export;
@@ -328,6 +329,27 @@ Widget pdfButton() {
       enableEditingMode: false,
     ),
     PlutoColumn(
+      title: 'Course Start Date',
+      field: 'courseStart',
+      readOnly: true,
+      filterHintText: 'Search Course',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      enableEditingMode: false,
+    ),
+    PlutoColumn(
+      title: 'Course End Date',
+      field: 'courseEnd',
+      readOnly: true,
+      filterHintText: 'Search Course',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      enableEditingMode: false,
+    ),
+
+    PlutoColumn(
 
       title: 'Trainee Name',
 
@@ -453,22 +475,23 @@ Widget pdfButton() {
       minWidth: 50,
       width: 90,
     ),
-    PlutoColumn(
-      title: 'OR Date',
-      field: 'orDate',
-      readOnly: true,
-      filterHintText: 'Search by date',
-      type: PlutoColumnType.date(format: 'yMMMMd'),
-      textAlign: PlutoColumnTextAlign.right,
-      titleTextAlign: PlutoColumnTextAlign.center,
-      enableEditingMode: false,
-    ),
+    
     PlutoColumn(
       title: 'OR Number',
       filterHintText: 'Search an OR #',
       field: 'orNumber',
       readOnly: true,
       type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      enableEditingMode: false,
+    ),
+    PlutoColumn(
+      title: 'OR Date',
+      field: 'orDate',
+      readOnly: true,
+      filterHintText: 'Search by date',
+      type: PlutoColumnType.date(format: 'yMMMMd'),
       textAlign: PlutoColumnTextAlign.right,
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
@@ -506,6 +529,8 @@ Widget pdfButton() {
         'name': PlutoCell(value: student.toString()),
         'progName': PlutoCell(value: program.title),
         'courseName': PlutoCell(value: course.title),
+        'courseStart': PlutoCell(value: DateFormat.yMMMMd().format(course.startDate!)),
+        'courseEnd': PlutoCell(value: DateFormat.yMMMMd().format(course.endDate!)),
         'trainingFee': PlutoCell(value: course.cost),
         'discount': PlutoCell(value: payment.discount),
         'amount': PlutoCell(value: payment.totalAmount),

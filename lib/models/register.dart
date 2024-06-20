@@ -17,14 +17,20 @@ class Register {
   @JsonKey(name: 'is_approved')
   bool status;
 
-  @JsonKey(name: 'eval_status')
-  bool eval;
-
   @JsonKey(name: 'cert_status')
   bool cert;
 
   @JsonKey(name: 'payment_status')
   bool? paymentStatus;
+
+  @JsonKey(name: 'eval_status')
+  bool eval;
+
+  @JsonKey(name: 'attend_status')
+  bool attend;
+
+  @JsonKey(name: 'bill_status')
+  bool bill;
 
   Register({
     this.id,
@@ -33,6 +39,8 @@ class Register {
     required this.status,
     this.eval = false,
     this.cert = false,
+    this.attend = false,
+    this.bill = false,
     this.paymentStatus
   });
 
