@@ -21,6 +21,7 @@ class Course {
   String? duration;
   String? schedule;
   String? venue;
+  String? evalink;
   
   @JsonKey(name: 'start_date')
   DateTime? startDate;
@@ -40,11 +41,14 @@ class Course {
     this.duration,
     this.schedule,
     this.venue,
+    this.evalink,
     this.startDate,
     this.endDate,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);
+
+  get eval => null;
 
   Map<String, dynamic> toJson() => _$CourseToJson(this);
 

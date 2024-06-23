@@ -44,7 +44,8 @@ class _CourseFormState extends State<CourseForm> {
       costCon,
       durationCon,
       scheduleCon,
-      venueCon;
+      venueCon,
+      evalCon;
 
   late String? startDateCon, endDateCon;
 
@@ -62,6 +63,7 @@ class _CourseFormState extends State<CourseForm> {
     durationCon = TextEditingController(text: widget.course?.duration);
     scheduleCon = TextEditingController(text: widget.course?.schedule);
     venueCon = TextEditingController(text: widget.course?.venue);
+    evalCon = TextEditingController(text: widget.course?.evalink);
 
     startDateCon = widget.course?.startDate != null
         ? DateFormat.yMMMMd().format(widget.course!.startDate!)
@@ -479,6 +481,40 @@ class _CourseFormState extends State<CourseForm> {
           const SizedBox(
             height: 6,
           ),
+          Flexible(
+            child: CupertinoTextFormFieldRow(
+              controller: evalCon,
+              validator: isNotEmpty,
+              prefix: const Row(
+                children: [
+                  Text("Evaluation Link",
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400)),
+                  SizedBox(width: 12),
+                ],
+              ),
+              placeholder: "Course Evaluation Link",
+              placeholderStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.black45,
+              ),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.black87,
+              ),
+              decoration: BoxDecoration(
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+          ),
           Column(
             children: <Widget>[
               SizedBox(
@@ -490,7 +526,7 @@ class _CourseFormState extends State<CourseForm> {
                       Container(
                           child: Text(
                         'Start Date: ' '$startDateCon',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
@@ -498,7 +534,7 @@ class _CourseFormState extends State<CourseForm> {
                       Container(
                           child: Text(
                         'End Date: ' '$endDateCon',
-                        style: TextStyle(
+                        style: const TextStyle(
                             color: Colors.black87,
                             fontSize: 14,
                             fontWeight: FontWeight.w400),
@@ -572,6 +608,7 @@ class _CourseFormState extends State<CourseForm> {
           duration: durationCon.text,
           schedule: scheduleCon.text,
           venue: venueCon.text,
+          evalink: evalCon.text,
           startDate: DateFormat.yMMMMd('en_US').parse(startDateCon!),
           endDate: DateFormat.yMMMMd('en_US').parse(endDateCon!),
         );

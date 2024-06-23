@@ -122,6 +122,20 @@ class _CourseDetailsState extends State<CourseDetails> {
                             fontWeight: FontWeight.w400),
                       ),
                     ),
+                    const SizedBox(
+                      width: 12,
+                    ),
+                    Chip(
+                      backgroundColor: Colors.white,
+                      surfaceTintColor: Colors.white,
+                      label: Text(
+                        "Evaluation: ${widget.course.evalink}",
+                        style: const TextStyle(
+                            color: Color(0xff153faa),
+                            fontSize: 14,
+                            fontWeight: FontWeight.w400),
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(
