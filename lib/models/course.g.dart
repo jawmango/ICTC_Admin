@@ -16,7 +16,7 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       duration: json['duration'] as String?,
       schedule: json['schedule'] as String?,
       venue: json['venue'] as String?,
-      evalink: json['eval_link'] as String?,
+      evalink: json['evalink'] as String?,
       startDate: json['start_date'] == null
           ? null
           : DateTime.parse(json['start_date'] as String),
@@ -43,7 +43,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
   writeNotNull('duration', instance.duration);
   writeNotNull('schedule', instance.schedule);
   writeNotNull('venue', instance.venue);
-  writeNotNull('eval_link', instance.evalink);
+  writeNotNull('evalink', instance.evalink);
   writeNotNull('start_date', instance.startDate?.toIso8601String());
   writeNotNull('end_date', instance.endDate?.toIso8601String());
   writeNotNull('students', instance.students);

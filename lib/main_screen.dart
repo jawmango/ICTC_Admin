@@ -50,6 +50,7 @@ class _MainScreenState extends State<MainScreen> {
       "List of Trainees",
       "List of Programs",
       "List of Courses",
+      "List of Vouchers",
       "List of Reports",
     ];
 
@@ -65,6 +66,7 @@ class _MainScreenState extends State<MainScreen> {
       const TraineesPage(),
       const ProgramsPage(),
       const CoursesPage(),
+      const VouchersPage(),
       const ReportsPage(),
     ];
 
@@ -191,6 +193,26 @@ class _MainScreenState extends State<MainScreen> {
       ),
       NavigationRailDestination(
         icon: Icon(
+          Icons.book_outlined,
+          color: Colors.white,
+          size: 30,
+        ),
+        selectedIcon: Icon(
+          Icons.book_rounded,
+          color: Colors.white,
+          size: 30,
+        ),
+        label: Text(
+          "Vouchers",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      NavigationRailDestination(
+        icon: Icon(
           Icons.table_chart_outlined,
           color: Colors.white,
           size: 30,
@@ -250,6 +272,8 @@ class _MainScreenState extends State<MainScreen> {
         return "program";
       case 5:
         return "course";
+      case 6:
+        return "vouchers";
       default:
         return "";
     }
