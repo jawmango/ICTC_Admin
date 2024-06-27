@@ -715,7 +715,7 @@ class _CourseDetailsState extends State<CourseDetails> {
             ),
           ),
           const Text(
-            "Edit a Receipt",
+            "Student Receipt",
             style: TextStyle(
                 color: Colors.black87,
                 fontSize: 24,

@@ -10,6 +10,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:dropdown_search/dropdown_search.dart';
 import 'package:syncfusion_flutter_datepicker/datepicker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:url_launcher/url_launcher.dart';
+
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key, this.course, this.register,});
@@ -27,7 +29,6 @@ class _RegisterFormState extends State<RegisterForm> {
   @override
   void initState() {
     super.initState();
-    // Initialize receiptUrl with the current image URL if available
     receiptUrl = getImageUrl();
   }
 
@@ -42,6 +43,24 @@ class _RegisterFormState extends State<RegisterForm> {
     }
   }
 
+  //download method
+  Future<void> downloadImage() async {
+  try {
+    final url = await Supabase.instance.client.storage
+        .from('receipts')
+        .createSignedUrl('${widget.register?.id}/receipt.png', 60);
+    if (url != null) {
+      await launch(url);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text("Failed to fetch image URL.")));
+    }
+  } catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Error fetching image URL.")));
+  }
+}
+
   final formKey = GlobalKey<FormState>();
 
   @override
@@ -51,6 +70,7 @@ class _RegisterFormState extends State<RegisterForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          // Existing image upload widget
           Material(
             color: Colors.black12,
             child: InkWell(
@@ -81,8 +101,8 @@ class _RegisterFormState extends State<RegisterForm> {
                     .uploadBinary(path, bytes,
                         fileOptions: const FileOptions(upsert: true))
                     .whenComplete(() {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Image uploaded successfully!")));
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Image uploaded successfully!")));
 
                   setState(() {
                     receiptUrl = getImageUrl(path); // Update receiptUrl with new image URL
@@ -109,11 +129,12 @@ class _RegisterFormState extends State<RegisterForm> {
               ),
             ),
           ),
+          SizedBox(height: 10),
+          // Container for displaying uploaded image
           Container(
-            // IMAGE
             margin: EdgeInsets.only(bottom: 10),
-            width: MediaQuery.of(context).size.width * 0.2,
-            height: MediaQuery.of(context).size.height * 0.2,
+            width: MediaQuery.of(context).size.width * 0.5,
+            height: MediaQuery.of(context).size.height * 0.7,
             decoration: BoxDecoration(
               color: Colors.white,
               border: Border.all(color: Colors.black12),
@@ -127,9 +148,12 @@ class _RegisterFormState extends State<RegisterForm> {
 
                 if (snapshot.hasData && snapshot.data!.isNotEmpty) {
                   final url = snapshot.data!;
-                  return Image.network(
-                    url,
-                    fit: BoxFit.cover, // Ensure the image covers the entire container
+                  return GestureDetector(
+                    onTap: downloadImage,
+                    child: Image.network(
+                      url,
+                      fit: BoxFit.cover,
+                    ),
                   );
                 }
 
@@ -146,10 +170,10 @@ class _RegisterFormState extends State<RegisterForm> {
               },
             ),
           ),
-          // Add other form fields or buttons as needed
         ],
       ),
     );
   }
 }
+
 
