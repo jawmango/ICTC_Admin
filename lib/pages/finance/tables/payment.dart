@@ -14,6 +14,7 @@ import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 import 'package:pluto_grid_plus_export/pluto_grid_plus_export.dart'
     as pluto_grid_plus_export;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ictc_admin/models/register.dart';
 
 class PaymentTable extends StatefulWidget {
   const PaymentTable({super.key});
@@ -452,31 +453,6 @@ Widget pdfButton() {
       width: 120,
     ),
     PlutoColumn(
-      enableEditingMode: false,
-      enableDropToResize: false,
-      filterWidget: Container(
-        color: Colors.white,
-      ),
-      enableFilterMenuItem: false,
-      title: 'Approved?',
-      field: 'isApproved',
-      readOnly: true,
-      type: PlutoColumnType.text(),
-      titleTextAlign: PlutoColumnTextAlign.center,
-      renderer: (rendererContext) => rendererContext.cell.value == true
-          ? const Icon(
-              Icons.check,
-              color: Colors.green,
-            )
-          : const Icon(
-              Icons.close,
-              color: Colors.red,
-            ),
-      minWidth: 50,
-      width: 90,
-    ),
-    
-    PlutoColumn(
       title: 'OR Number',
       filterHintText: 'Search an OR #',
       field: 'orNumber',
@@ -491,7 +467,7 @@ Widget pdfButton() {
       field: 'orDate',
       readOnly: true,
       filterHintText: 'Search by date',
-      type: PlutoColumnType.date(format: 'yMMMMd'),
+      type: PlutoColumnType.date(format: 'yyyy-MMM-dd'),
       textAlign: PlutoColumnTextAlign.right,
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
@@ -529,12 +505,11 @@ Widget pdfButton() {
         'name': PlutoCell(value: student.toString()),
         'progName': PlutoCell(value: program.title),
         'courseName': PlutoCell(value: course.title),
-        'courseStart': PlutoCell(value: DateFormat.yMMMMd().format(course.startDate!)),
-        'courseEnd': PlutoCell(value: DateFormat.yMMMMd().format(course.endDate!)),
+        'courseStart': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.startDate!)),
+        'courseEnd': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.endDate!)),
         'trainingFee': PlutoCell(value: course.cost),
         'discount': PlutoCell(value: payment.discount),
         'amount': PlutoCell(value: payment.totalAmount),
-        'isApproved': PlutoCell(value: payment.approved),
         'orDate': PlutoCell(value: payment.orDate),
         'orNumber': PlutoCell(value: payment.orNumber),
         'actions': PlutoCell(value: Builder(builder: (context) {

@@ -158,7 +158,7 @@ class _ReportTableState extends State<ReportTable> {
 
     return PlutoRow(
       cells: {
-        'month': PlutoCell(value: DateFormat.MMMM().format(jsonDate)),
+        'month': PlutoCell(value: DateFormat.yMMM().format(jsonDate)),
         'totalIncome': PlutoCell(value: json['total_income']),
         'totalExpense': PlutoCell(value: json['total_expenses']),
         'netIncome': PlutoCell(value: json['net_income']),

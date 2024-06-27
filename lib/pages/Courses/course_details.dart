@@ -1,18 +1,19 @@
 import 'package:data_table_2/data_table_2.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/register.dart';
 import 'package:intl/intl.dart';
-
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 
 class CourseDetails extends StatefulWidget {
-  const CourseDetails({super.key, required this.course});
+  const CourseDetails({super.key, required this.course, this.register});
 
   final Course course;
+  final Register? register;
 
   @override
   State<CourseDetails> createState() => _CourseDetailsState();
@@ -20,6 +21,19 @@ class CourseDetails extends StatefulWidget {
 
 class _CourseDetailsState extends State<CourseDetails> {
   late final Future<List<Register>> courseStudents;
+  late Future<String?> receiptUrl = getImageUrl();
+
+  Future<String?> getImageUrl([String? path]) async {
+    try {
+      final url = await Supabase.instance.client.storage
+          .from('receipts')
+          .createSignedUrl('${widget.register?.id}/image.png', 60);
+      return url;
+    } catch (e) {
+      return null;
+    }
+  }
+  
 
   @override
   void initState() {
@@ -48,6 +62,8 @@ class _CourseDetailsState extends State<CourseDetails> {
       body: buildBody(context),
     );
   }
+
+  
 
   Widget buildBody(BuildContext context) {
     return Column(
@@ -201,6 +217,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                       columns: const [
                         DataColumn(label: Text('Name')),
                         DataColumn(label: Text('Email')),
+                        DataColumn(label: Text('Receipts')),
                         DataColumn(label: Text('Billing Status')),
                         DataColumn(label: Text('Payment Status')),
                         DataColumn(label: Text('Attendance Status')),
@@ -218,7 +235,66 @@ class _CourseDetailsState extends State<CourseDetails> {
       ],
     );
   }
+  Widget receiptButton(Register register) {
+    return Material(
+            color: Colors.black12,
+            child: InkWell(
+              splashColor: Colors.black26,
+              onTap: () async {
+                // Select an image
+                final result = await FilePicker.platform.pickFiles(
+                    type: FileType.custom, allowedExtensions: ['png']);
 
+                if (result == null || result.files.isEmpty) {
+                  return;
+                }
+
+                final file = result.files.first;
+                final bytes = file.bytes;
+                final extension = file.extension;
+
+                if (bytes == null || extension == null) {
+                  return;
+                }
+
+                // Upload image to Supabase
+                final supa = Supabase.instance.client;
+                final path = "${register.id}/image.$extension";
+
+                await supa.storage
+                    .from('receipts')
+                    .uploadBinary(path, bytes,
+                        fileOptions: const FileOptions(upsert: true))
+                    .whenComplete(() {
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      content: Text("Image uploaded successfully!")));
+
+                  setState(() {
+                    receiptUrl = getImageUrl(path);
+                  });
+                });
+              },
+              child: Container(
+                color: Colors.transparent,
+                height: 40,
+                width: MediaQuery.of(context).size.width * 0.2,
+                child: const Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      "Upload Image",
+                      style: TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.w600,
+                          color: Colors.black),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+  }
   DataRow2 buildRow(Register register) {  
     final studentId = register.studentId;
 
@@ -270,6 +346,11 @@ class _CourseDetailsState extends State<CourseDetails> {
             }
           },
         )),
+        DataCell(
+          receiptButton(register)
+        ),
+
+        
         
         DataCell( //Billing
           ToggleSwitch(
