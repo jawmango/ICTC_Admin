@@ -34,6 +34,7 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
     }
   }
 
+
   Future<String> fetchCourseTitle(int courseId) async {
     final response = await Supabase.instance.client
         .from('course')
@@ -57,9 +58,13 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
         .select()
         .eq('student_id', widget.trainee.id!)
         .withConverter((data) {
+          
+          print(data);
+          return data.map((e) => Register.fromJson(e)).toList();
+        });
 
-
-
+        super.initState();
+  }
    @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Register>>(
