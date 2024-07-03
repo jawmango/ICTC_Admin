@@ -199,7 +199,7 @@ class _ExpenseTableState extends State<ExpenseTable> {
       title: 'OR Date',
       field: 'orDate',
       readOnly: true,
-      type: PlutoColumnType.date(format: 'yMMMMd'),
+      type: PlutoColumnType.date(format: 'yyyy-MMM-dd'),
       filterHintText: 'Search OR Date',
       textAlign: PlutoColumnTextAlign.right,
       titleTextAlign: PlutoColumnTextAlign.center,

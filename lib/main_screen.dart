@@ -50,8 +50,7 @@ class _MainScreenState extends State<MainScreen> {
       "List of Trainees",
       "List of Programs",
       "List of Courses",
-      "List of Vouchers",
-      "List of Reports",
+      // "List of Vouchers",
     ];
 
     return pageNames[_selectedIndex];
@@ -66,8 +65,7 @@ class _MainScreenState extends State<MainScreen> {
       const TraineesPage(),
       const ProgramsPage(),
       const CoursesPage(),
-      const VouchersPage(),
-      const ReportsPage(),
+      // const VouchersPage(),
     ];
 
     List<NavigationRailDestination> destinations = const [
@@ -191,46 +189,46 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
-      NavigationRailDestination(
-        icon: Icon(
-          Icons.book_outlined,
-          color: Colors.white,
-          size: 30,
-        ),
-        selectedIcon: Icon(
-          Icons.book_rounded,
-          color: Colors.white,
-          size: 30,
-        ),
-        label: Text(
-          "Vouchers",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-          ),
-        ),
-      ),
-      NavigationRailDestination(
-        icon: Icon(
-          Icons.table_chart_outlined,
-          color: Colors.white,
-          size: 30,
-        ),
-        selectedIcon: Icon(
-          Icons.table_chart_rounded,
-          color: Colors.white,
-          size: 30,
-        ),
-        label: Text(
-          "Reports",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      // NavigationRailDestination(
+      //   icon: Icon(
+      //     Icons.book_outlined,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   selectedIcon: Icon(
+      //     Icons.book_rounded,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   label: Text(
+      //     "Vouchers",
+      //     style: TextStyle(
+      //       fontSize: 16,
+      //       fontWeight: FontWeight.w400,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ),
+      // NavigationRailDestination(
+      //   icon: Icon(
+      //     Icons.table_chart_outlined,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   selectedIcon: Icon(
+      //     Icons.table_chart_rounded,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   label: Text(
+      //     "Reports",
+      //     style: TextStyle(
+      //       fontSize: 16,
+      //       fontWeight: FontWeight.w400,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ),
     ];
 
     return LayoutBuilder(
@@ -272,8 +270,8 @@ class _MainScreenState extends State<MainScreen> {
         return "program";
       case 5:
         return "course";
-      case 6:
-        return "vouchers";
+      // case 6:
+      //   return "vouchers";
       default:
         return "";
     }
