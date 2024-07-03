@@ -162,7 +162,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white,
                       label: Text(
-                        "Evaluation: ${widget.course.evalink}",
+                        "Evaluation: ${widget.course.evaLink}",
                         style: const TextStyle(
                             color: Color(0xff153faa),
                             fontSize: 14,

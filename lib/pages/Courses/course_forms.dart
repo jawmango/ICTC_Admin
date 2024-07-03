@@ -63,7 +63,7 @@ class _CourseFormState extends State<CourseForm> {
     durationCon = TextEditingController(text: widget.course?.duration);
     scheduleCon = TextEditingController(text: widget.course?.schedule);
     venueCon = TextEditingController(text: widget.course?.venue);
-    evalCon = TextEditingController(text: widget.course?.evalink);
+    evalCon = TextEditingController(text: widget.course?.evaLink);
 
     startDateCon = widget.course?.startDate != null
         ? DateFormat.yMMMMd().format(widget.course!.startDate!)
@@ -608,7 +608,7 @@ class _CourseFormState extends State<CourseForm> {
           duration: durationCon.text,
           schedule: scheduleCon.text,
           venue: venueCon.text,
-          evalink: evalCon.text,
+          evaLink: evalCon.text,
           startDate: DateFormat.yMMMMd('en_US').parse(startDateCon!),
           endDate: DateFormat.yMMMMd('en_US').parse(endDateCon!),
         );
