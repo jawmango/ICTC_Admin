@@ -14,3 +14,4 @@ Used for building the frontend of the website, ensuring a responsive and interac
 
 **Supabase**
 Used for managing the backend, including user authentication and database management.
+haha

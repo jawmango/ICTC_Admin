@@ -7,9 +7,9 @@ part of 'expense.dart';
 // **************************************************************************
 
 Expense _$ExpenseFromJson(Map<String, dynamic> json) => Expense(
-      id: json['id'] as int?,
-      programId: json['program_id'] as int?,
-      courseId: json['course_id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
+      programId: (json['program_id'] as num?)?.toInt(),
+      courseId: (json['course_id'] as num?)?.toInt(),
       orNumber: json['official_receipt_number'] as String?,
       orDate: json['official_receipt_date'] == null
           ? null

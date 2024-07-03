@@ -2,16 +2,19 @@ import 'dart:convert';
 import 'package:file_saver/file_saver.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/payment.dart';
 import 'package:ictc_admin/models/program.dart';
 import 'package:ictc_admin/models/seeds.dart';
 import 'package:ictc_admin/models/trainee.dart';
 import 'package:ictc_admin/pages/finance/forms/payment_form.dart';
+import 'package:intl/intl.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 import 'package:pluto_grid_plus_export/pluto_grid_plus_export.dart'
     as pluto_grid_plus_export;
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ictc_admin/models/register.dart';
 
 class PaymentTable extends StatefulWidget {
   const PaymentTable({super.key});
@@ -59,6 +62,29 @@ class _PaymentTableState extends State<PaymentTable> {
 
   late PlutoGridStateManager stateManager;
 
+void exportToPdf() async {
+    final themeData = pluto_grid_plus_export.ThemeData.withFont(
+      base: pluto_grid_plus_export.Font.ttf(
+        await rootBundle.load('assets/fonts/Archivo-Regular.ttf'),
+      ),
+      bold: pluto_grid_plus_export.Font.ttf(
+        await rootBundle.load('assets/fonts/Archivo-Bold.ttf'),
+      ),
+    );
+
+    var plutoGridPdfExport = pluto_grid_plus_export.PlutoGridDefaultPdfExport(
+      title: "ADNU ICTC Income Report",
+      creator: "ICTC Office",
+      format: pluto_grid_plus_export.PdfPageFormat.a4.landscape,
+      themeData: themeData,
+    );
+
+    await pluto_grid_plus_export.Printing.sharePdf(
+      bytes: await plutoGridPdfExport.export(stateManager),
+      filename: plutoGridPdfExport.getFilename(),
+    );
+  }
+
   void _defaultExportGridAsCSV() async {
     String title = "pluto_grid_plus_export";
     var exported = const Utf8Encoder().convert(
@@ -82,7 +108,7 @@ class _PaymentTableState extends State<PaymentTable> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [addButton(), csvButton()],
+                  children: [addButton(), csvButton(), pdfButton()],
                 ),
               ),
               buildInDataTable(),
@@ -96,6 +122,11 @@ class _PaymentTableState extends State<PaymentTable> {
   Widget csvButton() {
     return ElevatedButton(
         onPressed: _defaultExportGridAsCSV, child: const Text("Export to CSV"));
+  }
+
+Widget pdfButton() {
+    return ElevatedButton(
+        onPressed: exportToPdf, child: const Text("Export to PDF"));
   }
 
   Widget editButton(Payment payment) {
@@ -299,6 +330,27 @@ class _PaymentTableState extends State<PaymentTable> {
       enableEditingMode: false,
     ),
     PlutoColumn(
+      title: 'Course Start Date',
+      field: 'courseStart',
+      readOnly: true,
+      filterHintText: 'Search Course',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      enableEditingMode: false,
+    ),
+    PlutoColumn(
+      title: 'Course End Date',
+      field: 'courseEnd',
+      readOnly: true,
+      filterHintText: 'Search Course',
+      type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      enableEditingMode: false,
+    ),
+
+    PlutoColumn(
 
       title: 'Trainee Name',
 
@@ -401,45 +453,21 @@ class _PaymentTableState extends State<PaymentTable> {
       width: 120,
     ),
     PlutoColumn(
-      enableEditingMode: false,
-      enableDropToResize: false,
-      filterWidget: Container(
-        color: Colors.white,
-      ),
-      enableFilterMenuItem: false,
-      title: 'Approved?',
-      field: 'isApproved',
+      title: 'OR Number',
+      filterHintText: 'Search an OR #',
+      field: 'orNumber',
       readOnly: true,
       type: PlutoColumnType.text(),
+      textAlign: PlutoColumnTextAlign.right,
       titleTextAlign: PlutoColumnTextAlign.center,
-      renderer: (rendererContext) => rendererContext.cell.value == true
-          ? const Icon(
-              Icons.check,
-              color: Colors.green,
-            )
-          : const Icon(
-              Icons.close,
-              color: Colors.red,
-            ),
-      minWidth: 50,
-      width: 90,
+      enableEditingMode: false,
     ),
     PlutoColumn(
       title: 'OR Date',
       field: 'orDate',
       readOnly: true,
       filterHintText: 'Search by date',
-      type: PlutoColumnType.date(format: 'yMMMMd'),
-      textAlign: PlutoColumnTextAlign.right,
-      titleTextAlign: PlutoColumnTextAlign.center,
-      enableEditingMode: false,
-    ),
-    PlutoColumn(
-      title: 'OR Number',
-      filterHintText: 'Search an OR #',
-      field: 'orNumber',
-      readOnly: true,
-      type: PlutoColumnType.text(),
+      type: PlutoColumnType.date(format: 'yyyy-MMM-dd'),
       textAlign: PlutoColumnTextAlign.right,
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
@@ -477,10 +505,11 @@ class _PaymentTableState extends State<PaymentTable> {
         'name': PlutoCell(value: student.toString()),
         'progName': PlutoCell(value: program.title),
         'courseName': PlutoCell(value: course.title),
+        'courseStart': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.startDate!)),
+        'courseEnd': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.endDate!)),
         'trainingFee': PlutoCell(value: course.cost),
         'discount': PlutoCell(value: payment.discount),
         'amount': PlutoCell(value: payment.totalAmount),
-        'isApproved': PlutoCell(value: payment.approved),
         'orDate': PlutoCell(value: payment.orDate),
         'orNumber': PlutoCell(value: payment.orNumber),
         'actions': PlutoCell(value: Builder(builder: (context) {

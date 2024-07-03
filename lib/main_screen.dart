@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
       "List of Trainees",
       "List of Programs",
       "List of Courses",
-      "List of Reports",
+      // "List of Vouchers",
     ];
 
     return pageNames[_selectedIndex];
@@ -65,13 +65,13 @@ class _MainScreenState extends State<MainScreen> {
       const TraineesPage(),
       const ProgramsPage(),
       const CoursesPage(),
-      const ReportsPage(),
+      // const VouchersPage(),
     ];
 
     List<NavigationRailDestination> destinations = const [
       NavigationRailDestination(
         icon: Icon(
-          Icons.grid_view_outlined,
+          Icons.home_filled,
           color: Colors.white,
           size: 30,
         ),
@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
           size: 30,
         ),
         label: Text(
-          "Finance",
+          "Dashboard",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
@@ -189,26 +189,46 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
-      NavigationRailDestination(
-        icon: Icon(
-          Icons.table_chart_outlined,
-          color: Colors.white,
-          size: 30,
-        ),
-        selectedIcon: Icon(
-          Icons.table_chart_rounded,
-          color: Colors.white,
-          size: 30,
-        ),
-        label: Text(
-          "Reports",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      // NavigationRailDestination(
+      //   icon: Icon(
+      //     Icons.book_outlined,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   selectedIcon: Icon(
+      //     Icons.book_rounded,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   label: Text(
+      //     "Vouchers",
+      //     style: TextStyle(
+      //       fontSize: 16,
+      //       fontWeight: FontWeight.w400,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ),
+      // NavigationRailDestination(
+      //   icon: Icon(
+      //     Icons.table_chart_outlined,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   selectedIcon: Icon(
+      //     Icons.table_chart_rounded,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   label: Text(
+      //     "Reports",
+      //     style: TextStyle(
+      //       fontSize: 16,
+      //       fontWeight: FontWeight.w400,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ),
     ];
 
     return LayoutBuilder(
@@ -250,6 +270,8 @@ class _MainScreenState extends State<MainScreen> {
         return "program";
       case 5:
         return "course";
+      // case 6:
+      //   return "vouchers";
       default:
         return "";
     }

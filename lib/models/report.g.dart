@@ -7,9 +7,9 @@ part of 'report.dart';
 // **************************************************************************
 
 Report _$ReportFromJson(Map<String, dynamic> json) => Report(
-      id: json['id'] as int,
-      programId: json['program_id'] as int,
-      courseId: json['course_id'] as int,
+      id: (json['id'] as num).toInt(),
+      programId: (json['program_id'] as num).toInt(),
+      courseId: (json['course_id'] as num).toInt(),
       totalAmount: (json['total_amount'] as num).toDouble(),
       orNumber: json['official_receipt_number'] as String,
       orDate: DateTime.parse(json['official_receipt_date'] as String),

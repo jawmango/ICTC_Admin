@@ -57,12 +57,7 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
         .select()
         .eq('student_id', widget.trainee.id!)
         .withConverter((data) {
-          print(data);
-          return data.map((e) => Register.fromJson(e)).toList();
-        });
 
-    super.initState();
-  }
 
 
    @override
@@ -255,6 +250,7 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
       // ),
     );
   }
+
   Widget buildCourses(List<Register> register) {
     return Flexible(
       flex: 8,
@@ -302,7 +298,7 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
           ],
         ),
       ),
-    
+
   );
 }
 

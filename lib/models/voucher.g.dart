@@ -7,7 +7,7 @@ part of 'voucher.dart';
 // **************************************************************************
 
 Voucher _$VoucherFromJson(Map<String, dynamic> json) => Voucher(
-      id: json['id'] as int?,
+      id: (json['id'] as num?)?.toInt(),
       voucherCode: json['voucher_code'] as String,
       percentOff: (json['percent_off'] as num?)?.toDouble(),
     );
