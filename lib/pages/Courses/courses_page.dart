@@ -9,6 +9,7 @@ import 'package:ictc_admin/pages/courses/course_viewMore.dart';
 import 'package:ictc_admin/pages/courses/course_forms.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ictc_admin/pages/Courses/course_history.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -406,4 +407,5 @@ class _CoursesPageState extends State<CoursesPage> {
           ],
         ));
   }
+
 }

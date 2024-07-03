@@ -9,6 +9,8 @@ import 'package:ictc_admin/pages/trainees/trainees_page.dart';
 import 'package:ictc_admin/pages/courses/courses_page.dart';
 import 'package:ictc_admin/pages/Vouchers/vouchers_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ictc_admin/pages/courses/course_history.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -50,6 +52,7 @@ class _MainScreenState extends State<MainScreen> {
       "List of Trainees",
       "List of Programs",
       "List of Courses",
+      "History",
       // "List of Vouchers",
     ];
 
@@ -65,6 +68,7 @@ class _MainScreenState extends State<MainScreen> {
       const TraineesPage(),
       const ProgramsPage(),
       const CoursesPage(),
+      const CourseHistoryWidget(),
       // const VouchersPage(),
     ];
 
@@ -182,6 +186,26 @@ class _MainScreenState extends State<MainScreen> {
         ),
         label: Text(
           "Courses",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+          ),
+        ),
+      ),
+      NavigationRailDestination(
+        icon: Icon(
+          Icons.book_outlined,
+          color: Colors.white,
+          size: 30,
+        ),
+        selectedIcon: Icon(
+          Icons.book_rounded,
+          color: Colors.white,
+          size: 30,
+        ),
+        label: Text(
+          "Logs",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,
