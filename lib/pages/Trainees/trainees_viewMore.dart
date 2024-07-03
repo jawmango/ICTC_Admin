@@ -57,13 +57,6 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
         .select()
         .eq('student_id', widget.trainee.id!)
         .withConverter((data) {
-      print(data);
-      return data.map((e) => Register.fromJson(e)).toList();
-    });
-
-    super.initState();
-  }
-
 
 
 
@@ -305,6 +298,7 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
           ],
         ),
       ),
+
   );
 }
 
