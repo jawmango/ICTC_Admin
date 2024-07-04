@@ -91,6 +91,7 @@ class _CoursesPageState extends State<CoursesPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    historyButton(),
                     buildSearchBar(),
                     addButton()],
                 ),
@@ -400,6 +401,36 @@ class _CoursesPageState extends State<CoursesPage> {
             ),
             Text(
               "View",
+              style: TextStyle(
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ));
+  }
+
+   Widget historyButton() {
+    return TextButton(
+        onPressed: () {
+          // var validRegisterObject;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CourseHistoryWidget(),
+              ));
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.timeline,
+              size: 20,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              "Activity logs",
               style: TextStyle(
                 color: Colors.black54,
               ),

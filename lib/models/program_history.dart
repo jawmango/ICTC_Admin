@@ -1,18 +1,18 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'course_history.g.dart';
+part 'program_history.g.dart';
 
 @JsonSerializable(
     includeIfNull: false
 )
-class CourseHistory {
+class ProgramHistory{
   final int? id;
 
   @JsonKey(name: 'table_name')
   String? tableName;
 
-  @JsonKey(name: 'course_name')
-  String courseName;
+  @JsonKey(name: 'program_name')
+  String programName;
 
   @JsonKey(name: 'action')
   String? action;
@@ -26,22 +26,22 @@ class CourseHistory {
   @JsonKey(name: 'user_email')
   String? userEmail;
 
-  CourseHistory({
+  ProgramHistory({
     this.id,
     this.tableName,
-    required this.courseName,
+    required this.programName,
     this.action,
     this.occurredAt,
     required this.userId,
     this.userEmail,
   });
 
-  factory CourseHistory.fromJson(Map<String, dynamic> json) => _$CourseHistoryFromJson(json);
+  factory ProgramHistory.fromJson(Map<String, dynamic> json) => _$ProgramHistoryFromJson(json);
 
-  Map<String, dynamic> toJson() => _$CourseHistoryToJson(this);
+  Map<String, dynamic> toJson() => _$ProgramHistoryToJson(this);
 
   @override
   String toString() {
-    return "CourseHistory #$id";
+    return "ProgramHistory #$id";
   }
 }

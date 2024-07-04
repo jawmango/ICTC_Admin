@@ -12,6 +12,7 @@ import 'package:ictc_admin/models/program.dart';
 import 'package:ictc_admin/pages/programs/program_forms.dart';
 import 'package:ictc_admin/pages/programs/programs_viewMore.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ictc_admin/pages/Programs/program_history.dart';
 
 
 class ProgramsPage extends StatefulWidget {
@@ -83,7 +84,7 @@ class _ProgramsPageState extends State<ProgramsPage>
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [buildSearchBar(), addButton()],
+                  children: [historyButton(), buildSearchBar(), addButton()],
                 ),
               ),
               buildDataTable(),
@@ -369,6 +370,36 @@ class _ProgramsPageState extends State<ProgramsPage>
             ),
             Text(
               "View",
+              style: TextStyle(
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ));
+  }
+
+  Widget historyButton() {
+    return TextButton(
+        onPressed: () {
+          // var validRegisterObject;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProgramHistoryWidget(),
+              ));
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.timeline,
+              size: 20,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              "Activity logs",
               style: TextStyle(
                 color: Colors.black54,
               ),

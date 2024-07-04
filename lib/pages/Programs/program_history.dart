@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/register.dart';
-import 'package:ictc_admin/models/course_history.dart';
+import 'package:ictc_admin/models/program_history.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:html_unescape/html_unescape.dart';
@@ -14,27 +14,27 @@ import 'package:ictc_admin/pages/courses/register_forms.dart';
 import 'package:ictc_admin/pages/courses/courses_page.dart';
 
 
-class CourseHistoryWidget extends StatefulWidget {
-  const CourseHistoryWidget({super.key});
+class ProgramHistoryWidget extends StatefulWidget {
+  const ProgramHistoryWidget({super.key});
 
   @override
-  State<CourseHistoryWidget> createState() => _CourseHistoryWidgetState();
+  State<ProgramHistoryWidget> createState() => _ProgramHistoryWidgetState();
 }
 
-class _CourseHistoryWidgetState extends State<CourseHistoryWidget> {
+class _ProgramHistoryWidgetState extends State<ProgramHistoryWidget> {
 
   
-  late Stream<List<CourseHistory>> _history;
-  late List<CourseHistory> _allHistory;
-  late List<CourseHistory> _filteredHistory;
+  late Stream<List<ProgramHistory>> _history;
+  late List<ProgramHistory> _allHistory;
+  late List<ProgramHistory> _filteredHistory;
   String _searchQuery = "";
 
   @override
   void initState() {
     _history = Supabase.instance.client
-        .from('course_history')
+        .from('program_history')
         .stream(primaryKey: ['id']).map((data) {
-      final history = data.map((e) => CourseHistory.fromJson(e)).toList();
+      final history = data.map((e) => ProgramHistory.fromJson(e)).toList();
       _allHistory = history;
       _filteredHistory = history;
       return history;
@@ -68,10 +68,10 @@ class _CourseHistoryWidgetState extends State<CourseHistoryWidget> {
   // }
 
   void _filterHistory(String query) {
-    final filtered = _allHistory.where((courseHistory) {
-      final courseNameLower = courseHistory.courseName.toLowerCase();
+    final filtered = _allHistory.where((programHistory) {
+      final programNameLower = programHistory.programName.toLowerCase();
       final searchLower = query.toLowerCase();
-      return courseNameLower.contains(searchLower);
+      return programNameLower.contains(searchLower);
     }).toList();
 
     setState(() {
@@ -109,6 +109,7 @@ class _CourseHistoryWidgetState extends State<CourseHistoryWidget> {
                         mainAxisAlignment: MainAxisAlignment.end,
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
+                          
                           buildSearchBar(),
                         ],
                       ),
@@ -207,7 +208,7 @@ class _CourseHistoryWidgetState extends State<CourseHistoryWidget> {
               horizontalMargin: 30,
               isVerticalScrollBarVisible: true,
               columns: const [
-                DataColumn2(label: Text('Course Name')),
+                DataColumn2(label: Text('Program Name')),
                 DataColumn2(label: Text('ACTION')),
                 DataColumn2(label: Text('Time')),
                 // DataColumn2(label: Text('Attended Trainees')),
@@ -216,19 +217,19 @@ class _CourseHistoryWidgetState extends State<CourseHistoryWidget> {
               ],
               // rows: snapshot.data!.map((e) => buildRow(e)).toList(),
               rows: _filteredHistory
-                  .map((courseHistory) => buildRow(courseHistory))
+                  .map((programHistory) => buildRow(programHistory))
                   .toList(),
             ),
           );
         });
   }
 
-  DataRow2 buildRow(CourseHistory courseHistory) {
+  DataRow2 buildRow(ProgramHistory programHistory) {
     return DataRow2(onSelectChanged: (selected) {}, cells: [
-      DataCell(Text(courseHistory.courseName.toString())),
-      DataCell(Text(courseHistory.action.toString())),
-      DataCell(Text(courseHistory.occurredAt.toString())),
-      DataCell(Text(courseHistory.userEmail.toString())),
+      DataCell(Text(programHistory.programName.toString())),
+      DataCell(Text(programHistory.action.toString())),
+      DataCell(Text(programHistory.occurredAt.toString())),
+      DataCell(Text(programHistory.userEmail.toString())),
       
 
       // // const DataCell(Text('Advance Figma')),
@@ -239,6 +240,29 @@ class _CourseHistoryWidgetState extends State<CourseHistoryWidget> {
     ]);
   }
 
-  
+  Widget backButton() {
+    return TextButton(
+        onPressed: () {
+          Navigator.of(context).popUntil((route) => route.isFirst);
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.arrow_back,
+              size: 20,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              "Back to Program Page",
+              style: TextStyle(
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ));
+  }
 
 }
