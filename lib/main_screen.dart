@@ -9,6 +9,9 @@ import 'package:ictc_admin/pages/trainees/trainees_page.dart';
 import 'package:ictc_admin/pages/courses/courses_page.dart';
 import 'package:ictc_admin/pages/Vouchers/vouchers_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ictc_admin/pages/courses/course_history.dart';
+import 'package:ictc_admin/pages/programs/program_history.dart';
+
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

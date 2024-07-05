@@ -10,6 +10,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:html_unescape/html_unescape.dart';
 import 'package:toggle_switch/toggle_switch.dart';
 import 'package:ictc_admin/pages/courses/register_forms.dart';
+import 'package:ictc_admin/pages/Courses/registration_history.dart';
 
 class CourseDetails extends StatefulWidget {
   const CourseDetails({super.key, required this.course, this.register});
@@ -72,6 +73,7 @@ class _CourseDetailsState extends State<CourseDetails> {
       backgroundColor: const Color(0xff19306B),
       appBar: AppBar(
         title: const Text('Course Details'),
+        actions: [historyButton(),],
         backgroundColor: const Color(0xff19306B),
         elevation: 0,
         foregroundColor: Colors.white,
@@ -130,6 +132,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
 
+
                     Chip(
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white,
@@ -162,7 +165,7 @@ class _CourseDetailsState extends State<CourseDetails> {
                       backgroundColor: Colors.white,
                       surfaceTintColor: Colors.white,
                       label: Text(
-                        "Evaluation: ${widget.course.evalink}",
+                        "Evaluation: ${widget.course.evaLink}",
                         style: const TextStyle(
                             color: Color(0xff153faa),
                             fontSize: 14,
@@ -252,425 +255,8 @@ class _CourseDetailsState extends State<CourseDetails> {
       ],
     );
   }
-//   Widget receiptButton(Register register) {
-//   return TextButton(
-//     onPressed: () {
-//       showDialog(
-//         context: context,
-//         builder: (context) {
-//           return AlertDialog(
-//             content: Container(
-//               width: MediaQuery.of(context).size.width * 0.5,
-//               child: Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 crossAxisAlignment: CrossAxisAlignment.stretch,
-//                 children: [
-//                   Padding(
-//                     padding: const EdgeInsets.symmetric(horizontal: 20),
-//                     child: Row(
-//                       children: [
-//                         IconButton(
-//                           onPressed: () {
-//                             Navigator.pop(context);
-//                           },
-//                           icon: Icon(Icons.arrow_back),
-//                         ),
-//                         Text(
-//                           "Receipt",
-//                           style: TextStyle(fontSize: 20),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                   Divider(),
-//                   SizedBox(height: 20),
-//                   Material(
-//                     color: Colors.black12,
-//                     child: InkWell(
-//                       splashColor: Colors.black26,
-//                       onTap: () async {
-//                         // Select an image
-//                         final result =
-//                             await FilePicker.platform.pickFiles(
-//                           type: FileType.custom,
-//                           allowedExtensions: ['png', 'jpg', 'jpeg'],
-//                         );
-
-//                         if (result == null || result.files.isEmpty) {
-//                           return;
-//                         }
-
-//                         final file = result.files.first;
-//                         final bytes = file.bytes;
-//                         final extension = file.extension;
-
-//                         if (bytes == null || extension == null) {
-//                           return;
-//                         }
-
-//                         // Upload image to Supabase
-//                         final supa = Supabase.instance.client;
-//                         final path =
-//                             "${register.id}/receipt.${extension}";
-
-//                         await supa.storage
-//                             .from('receipts')
-//                             .uploadBinary(path, bytes,
-//                                 fileOptions: const FileOptions(
-//                                     upsert: true))
-//                             .whenComplete(() {
-//                           ScaffoldMessenger.of(context).showSnackBar(
-//                             const SnackBar(
-//                               content: Text(
-//                                   "Image uploaded successfully!"),
-//                             ),
-//                           );
-
-//                           setState(() {
-//                             receiptUrl = getImageUrl(path);
-//                           });
-//                         });
-//                       },
-//                       child: Container(
-//                         color: Colors.transparent,
-//                         height: 40,
-//                         width: MediaQuery.of(context).size.width * 0.4,
-//                         child: const Row(
-//                           mainAxisAlignment:
-//                               MainAxisAlignment.center,
-//                           crossAxisAlignment:
-//                               CrossAxisAlignment.center,
-//                           children: [
-//                             Icon(
-//                               Icons.cloud_upload_outlined,
-//                               size: 20,
-//                               color: Colors.black,
-//                             ),
-//                             SizedBox(width: 5),
-//                             Text(
-//                               "Upload Receipt",
-//                               style: TextStyle(
-//                                 fontSize: 12,
-//                                 fontWeight: FontWeight.w600,
-//                                 color: Colors.black,
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   SizedBox(height: 20),
-//                   FutureBuilder<String?>(
-//                     future: receiptUrl,
-//                     builder:
-//                         (context, snapshot) {
-//                       if (snapshot.connectionState ==
-//                           ConnectionState.waiting) {
-//                         return Center(
-//                           child:
-//                               CircularProgressIndicator(),
-//                         );
-//                       }
-
-//                       if (snapshot.hasData &&
-//                           snapshot.data!.isNotEmpty) {
-//                         final url = snapshot.data!;
-//                         return Image.network(
-//                           url,
-//                           fit: BoxFit.cover,
-//                         );
-//                       }
-
-//                       return Center(
-//                         child: Column(
-//                           mainAxisAlignment:
-//                               MainAxisAlignment.center,
-//                           children: [
-//                             Icon(
-//                               Icons.image_not_supported_rounded,
-//                               size: 40,
-//                               color: Colors.black54,
-//                             ),
-//                             SizedBox(height: 5),
-//                             Text(
-//                               'No image uploaded.',
-//                               style: TextStyle(
-//                                 fontSize: 13,
-//                                 fontWeight: FontWeight.w400,
-//                                 color: Colors.black54,
-//                               ),
-//                             )
-//                           ],
-//                         ),
-//                       );
-//                     },
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           );
-//         },
-//       );
-//     },
-//     child: Row(
-//       children: [
-//         Icon(
-//           Icons.receipt_long_outlined,
-//           size: 20,
-//           color: Color(0xff153faa),
-//         ),
-//         SizedBox(width: 5),
-//         Text("Receipts"),
-//       ],
-//     ),
-//   );
-// }
-
-    // return Material(
-    //         color: Colors.black12,
-    //         child: InkWell(
-    //           splashColor: Colors.black26,
-    //           onTap: () async {
-    //             // Select an image
-    //             final result = await FilePicker.platform.pickFiles(
-    //                 type: FileType.custom, allowedExtensions: ['png']);
-
-    //             if (result == null || result.files.isEmpty) {
-    //               return;
-    //             }
-
-    //             final file = result.files.first;
-    //             final bytes = file.bytes;
-    //             final extension = file.extension;
-
-    //             if (bytes == null || extension == null) {
-    //               return;
-    //             }
-
-    //             // Upload image to Supabase
-    //             final supa = Supabase.instance.client;
-    //             final path = "${register.id}/image.$extension";
-
-    //             await supa.storage
-    //                 .from('receipts')
-    //                 .uploadBinary(path, bytes,
-    //                     fileOptions: const FileOptions(upsert: true))
-    //                 .whenComplete(() {
-    //               ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-    //                   content: Text("Image uploaded successfully!")));
-
-    //               setState(() {
-    //                 receiptUrl = getImageUrl(path);
-    //               });
-    //             });
-    //           },
-    //           child: Container(
-    //             color: Colors.transparent,
-    //             height: 40,
-    //             width: MediaQuery.of(context).size.width * 0.2,
-    //             child: const Row(
-    //               mainAxisAlignment: MainAxisAlignment.center,
-    //               crossAxisAlignment: CrossAxisAlignment.center,
-    //               children: [
-    //                 Text(
-    //                   "Upload Image",
-    //                   style: TextStyle(
-    //                       fontSize: 12,
-    //                       fontWeight: FontWeight.w600,
-    //                       color: Colors.black),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         ),
-    //       );
 
 
-   
-// Widget viewRecButton(Register register) {
-//   return TextButton(
-//     onPressed: () {
-//       showDialog(
-//         context: context,
-//         builder: (context) {
-//           return AlertDialog(
-//             content: Container(
-//               width: MediaQuery.of(context).size.width * 0.5,
-//               child: Column(
-//                 mainAxisSize: MainAxisSize.min,
-//                 crossAxisAlignment: CrossAxisAlignment.stretch,
-//                 children: [
-//                   Padding(
-//                     padding: const EdgeInsets.symmetric(horizontal: 20),
-//                     child: Row(
-//                       children: [
-//                         IconButton(
-//                           onPressed: () {
-//                             Navigator.pop(context);
-//                           },
-//                           icon: Icon(Icons.arrow_back),
-//                         ),
-//                         Text(
-//                           "Receipt",
-//                           style: TextStyle(fontSize: 20),
-//                         ),
-//                       ],
-//                     ),
-//                   ),
-//                   Divider(),
-//                   SizedBox(height: 20),
-//                   FutureBuilder<String?>(
-//                     future: getImageUrl(
-//                         "${register.id}/receipt.png"),
-//                     builder:
-//                         (context, snapshot) {
-//                       if (snapshot.connectionState ==
-//                           ConnectionState.waiting) {
-//                         return Center(
-//                           child:
-//                               CircularProgressIndicator(),
-//                         );
-//                       }
-
-//                       if (snapshot.hasData &&
-//                           snapshot.data!.isNotEmpty) {
-//                         final url = snapshot.data!;
-//                         return Image.network(
-//                           url,
-//                           fit: BoxFit.cover,
-//                         );
-//                       }
-
-//                       return Center(
-//                         child: Column(
-//                           mainAxisAlignment:
-//                               MainAxisAlignment.center,
-//                           children: [
-//                             Icon(
-//                               Icons.image_not_supported_rounded,
-//                               size: 40,
-//                               color: Colors.black54,
-//                             ),
-//                             SizedBox(height: 5),
-//                             Text(
-//                               'No image uploaded.',
-//                               style: TextStyle(
-//                                 fontSize: 13,
-//                                 fontWeight: FontWeight.w400,
-//                                 color: Colors.black54,
-//                               ),
-//                             )
-//                           ],
-//                         ),
-//                       );
-//                     },
-//                   ),
-//                 ],
-//               ),
-//             ),
-//           );
-//         },
-//       );
-//     },
-//     child: Row(
-//       children: [
-//         Icon(
-//           Icons.receipt_long_outlined,
-//           size: 20,
-//           color: Color(0xff153faa),
-//         ),
-//         SizedBox(width: 5),
-//         Text("View Receipt"),
-//       ],
-//     ),
-//   );
-// }
-
-  // Widget viewRecButton(Register register)
-  // {
-  //   final path = "${register.id}/image.png";
-  //  return TextButton(
-  //       onPressed: () {
-  //         showDialog(
-  //           context: context,
-  //           builder: (context) {
-  //             return AlertDialog(
-  //     content: Container(
-  //       // width: MediaQuery.of(context).size.width * 0.3,
-  //       // height: MediaQuery.of(context).size.height * 0.3,
-  //       child: Column(
-  //         mainAxisSize: MainAxisSize.min,
-  //         crossAxisAlignment: CrossAxisAlignment.stretch,
-  //         children: [
-  //                   Padding(
-  //         padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
-  //         child: Column(
-  //           mainAxisAlignment: MainAxisAlignment.start,
-  //           crossAxisAlignment: CrossAxisAlignment.start,
-  //           children: [
-  //             SizedBox(height: 20),
-  //             Container(
-  //               margin: EdgeInsets.only(bottom: 20),
-  //               width: MediaQuery.of(context).size.width * 0.2,
-  //               height: 250,
-  //               decoration: BoxDecoration(
-  //                   color: Colors.white,
-  //                   border: Border.all(color: Colors.black12)
-  //               ),
-  //               child: FutureBuilder(
-  //                 future: getImageUrl(path), 
-  //                 builder: (context, snapshot) {
-  //                   if (snapshot.connectionState == ConnectionState.waiting) {
-  //                     return Center(
-  //                       child: CircularProgressIndicator(),
-  //                     );
-  //                   }
-
-  //                   if (snapshot.hasData) {
-  //                     final url = snapshot.data!;
-  //                     return Image.network(
-  //                       url,
-  //                       fit: BoxFit.cover,
-  //                     );
-  //                   }
-
-  //                   return Center(
-  //                     child: Column(
-  //                       mainAxisAlignment: MainAxisAlignment.center,
-  //                       children: [
-  //                         Image(image: AssetImage('assets/images/logo_ictc.png'), fit: BoxFit.cover, height: 50, width: 50,),SizedBox(height:20  ,),
-  //                     Text('No image attached.', style: TextStyle(fontSize: 13, fontWeight: FontWeight.w400, color: Colors.black54))
-  //                       ],
-  //                     ),
-  //                   );
-  //                 },
-  //               ),
-  //             ),
-  //                   ],
-  //                   ),
-  //                     ),
-  //         ],
-  //       ),
-  //     ),
-  //         );
-  //           },
-  //         );
-  //       },
-  //       child: const Row(
-  //         children: [
-  //           Icon(
-  //             Icons.visibility,
-  //             size: 20,
-  //             color: Color(0xff153faa),
-  //           ),
-  //           SizedBox(
-  //             width: 5,
-  //           ),
-  //           Text("View"),
-  //         ],
-  //       ));
-  // }
   Widget receiptButton(Register register)
   {
     return TextButton(
@@ -1000,5 +586,35 @@ class _CourseDetailsState extends State<CourseDetails> {
         ),
       ],
     );
+  }
+
+  Widget historyButton() {
+    return TextButton(
+        onPressed: () {
+          // var validRegisterObject;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => RegistrationHistoryWidget(),
+              ));
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.timeline,
+              size: 20,
+              color: Colors.white,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              "Activity logs",
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+          ],
+        ));
   }
 }

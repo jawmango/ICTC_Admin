@@ -14,6 +14,9 @@ class Course {
   @JsonKey(name: 'trainer_id')
   int? trainerId;
 
+  @JsonKey(name: 'eval_link')
+  String? evaLink;
+
   // TODO: set nullable and not nullable variables
   String title;
   String? description;
@@ -21,7 +24,7 @@ class Course {
   String? duration;
   String? schedule;
   String? venue;
-  String? evalink;
+
   
   @JsonKey(name: 'start_date')
   DateTime? startDate;
@@ -29,19 +32,21 @@ class Course {
   @JsonKey(name: 'end_date')
   DateTime? endDate;
 
+
+
   var students;
 
   Course({
     this.id,
     required this.programId,
     required this.trainerId,
+    this.evaLink,
     required this.title,
     this.description,
     required this.cost,
     this.duration,
     this.schedule,
     this.venue,
-    this.evalink,
     this.startDate,
     this.endDate,
   });

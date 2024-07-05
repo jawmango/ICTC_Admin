@@ -61,7 +61,7 @@ class Seeds {
       duration: '2 hours',
       schedule: 'Jan 2',
       venue: 'Xavier Hall',
-      evalink: 'Facebook.com',
+      evaLink: 'Facebook.com',
     ),
   ];
 

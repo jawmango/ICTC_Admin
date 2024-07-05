@@ -9,6 +9,7 @@ import 'package:ictc_admin/pages/courses/course_viewMore.dart';
 import 'package:ictc_admin/pages/courses/course_forms.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:ictc_admin/pages/Courses/course_history.dart';
 
 class CoursesPage extends StatefulWidget {
   const CoursesPage({super.key});
@@ -90,6 +91,7 @@ class _CoursesPageState extends State<CoursesPage> {
                   mainAxisAlignment: MainAxisAlignment.end,
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
+                    historyButton(),
                     buildSearchBar(),
                     addButton()],
                 ),
@@ -406,4 +408,35 @@ class _CoursesPageState extends State<CoursesPage> {
           ],
         ));
   }
+
+   Widget historyButton() {
+    return TextButton(
+        onPressed: () {
+          // var validRegisterObject;
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => CourseHistoryWidget(),
+              ));
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.timeline,
+              size: 20,
+              color: Colors.grey,
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text(
+              "Activity logs",
+              style: TextStyle(
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ));
+  }
+
 }
