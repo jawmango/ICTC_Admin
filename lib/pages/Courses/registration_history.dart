@@ -69,7 +69,7 @@ class _RegistrationHistoryWidgetState extends State<RegistrationHistoryWidget> {
 
   void _filterHistory(String query) {
     final filtered = _allHistory.where((registrationHistory) {
-      final registrationNameLower = registrationHistory.userEmail.toLowerCase();
+      final registrationNameLower = registrationHistory.studentName.toLowerCase();
       final searchLower = query.toLowerCase();
       return registrationNameLower.contains(searchLower);
     }).toList();
@@ -194,6 +194,8 @@ class _RegistrationHistoryWidgetState extends State<RegistrationHistoryWidget> {
             );
           }
 
+          List<RegistrationHistory> reversedHistory = _filteredHistory.reversed.toList();
+
           return Expanded(
             child: DataTable2(
               showCheckboxColumn: false,
@@ -216,7 +218,7 @@ class _RegistrationHistoryWidgetState extends State<RegistrationHistoryWidget> {
                 DataColumn2(label: Text('User Email'))
               ],
               // rows: snapshot.data!.map((e) => buildRow(e)).toList(),
-              rows: _filteredHistory
+              rows: reversedHistory
                   .map((registrationHistory) => buildRow(registrationHistory))
                   .toList(),
             ),
@@ -226,53 +228,8 @@ class _RegistrationHistoryWidgetState extends State<RegistrationHistoryWidget> {
 
   DataRow2 buildRow(RegistrationHistory registrationHistory) {
     return DataRow2(onSelectChanged: (selected) {}, cells: [
-      DataCell(
-          FutureBuilder(
-            future: Supabase.instance.client
-                .from('student')
-                .select('first_name, last_name')
-                .eq('id', registrationHistory.studentId)
-                .single()
-                .then((response) {
-              final firstName = response['first_name'] as String;
-              final lastName = response['last_name'] as String;
-              final fullName = '$firstName $lastName';
-              return fullName;
-            }),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                return Text(snapshot.data ?? '');
-              }
-            },
-          ),
-        ),
-        DataCell(
-          FutureBuilder(
-            future: Supabase.instance.client
-                .from('course')
-                .select('title')
-                .eq('id', registrationHistory.courseId)
-                .single()
-                .then((response) {
-              final courseName = response['title'] as String;
-              
-              return courseName;
-            }),
-            builder: (BuildContext context, AsyncSnapshot<String> snapshot) {
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
-              } else if (snapshot.hasError) {
-                return Text('Error: ${snapshot.error}');
-              } else {
-                return Text(snapshot.data ?? '');
-              }
-            },
-          ),
-        ),
+      DataCell(Text(registrationHistory.studentName.toString())),
+      DataCell(Text(registrationHistory.courseName.toString())),
       DataCell(Text(registrationHistory.action.toString())),
       DataCell(Text(registrationHistory.occurredAt.toString())),
       DataCell(Text(registrationHistory.userEmail.toString())),

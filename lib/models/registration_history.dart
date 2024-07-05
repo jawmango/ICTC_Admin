@@ -31,6 +31,12 @@ class RegistrationHistory {
   @JsonKey(name: 'course_id')
   int courseId;
 
+  @JsonKey(name: 'course_name')
+  String courseName;
+
+  @JsonKey(name: 'student_name')
+  String studentName;
+
 
   RegistrationHistory({
     this.id,
@@ -41,6 +47,8 @@ class RegistrationHistory {
     required this.userEmail,
     required this.studentId,
     required this.courseId,
+    required this.courseName,
+    required this.studentName,
   });
 
   factory RegistrationHistory.fromJson(Map<String, dynamic> json) => _$RegistrationHistoryFromJson(json);

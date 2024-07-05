@@ -18,6 +18,8 @@ RegistrationHistory _$RegistrationHistoryFromJson(Map<String, dynamic> json) =>
       userEmail: json['user_email'] as String,
       studentId: (json['student_id'] as num).toInt(),
       courseId: (json['course_id'] as num).toInt(),
+      courseName: json['course_name'] as String,
+      studentName: json['student_name'] as String,
     );
 
 Map<String, dynamic> _$RegistrationHistoryToJson(RegistrationHistory instance) {
@@ -37,5 +39,7 @@ Map<String, dynamic> _$RegistrationHistoryToJson(RegistrationHistory instance) {
   val['user_email'] = instance.userEmail;
   val['student_id'] = instance.studentId;
   val['course_id'] = instance.courseId;
+  val['course_name'] = instance.courseName;
+  val['student_name'] = instance.studentName;
   return val;
 }

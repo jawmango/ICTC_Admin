@@ -195,6 +195,8 @@ class _ProgramHistoryWidgetState extends State<ProgramHistoryWidget> {
             );
           }
 
+          List<ProgramHistory> reversedHistory = _filteredHistory.reversed.toList();
+
           return Expanded(
             child: DataTable2(
               showCheckboxColumn: false,
@@ -216,7 +218,7 @@ class _ProgramHistoryWidgetState extends State<ProgramHistoryWidget> {
                 DataColumn2(label: Text('User Email'))
               ],
               // rows: snapshot.data!.map((e) => buildRow(e)).toList(),
-              rows: _filteredHistory
+              rows: reversedHistory
                   .map((programHistory) => buildRow(programHistory))
                   .toList(),
             ),

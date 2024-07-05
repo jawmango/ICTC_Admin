@@ -194,6 +194,8 @@ class _CourseHistoryWidgetState extends State<CourseHistoryWidget> {
             );
           }
 
+          List<CourseHistory> reversedHistory = _filteredHistory.reversed.toList();
+
           return Expanded(
             child: DataTable2(
               showCheckboxColumn: false,
@@ -215,7 +217,7 @@ class _CourseHistoryWidgetState extends State<CourseHistoryWidget> {
                 DataColumn2(label: Text('User Email'))
               ],
               // rows: snapshot.data!.map((e) => buildRow(e)).toList(),
-              rows: _filteredHistory
+              rows: reversedHistory
                   .map((courseHistory) => buildRow(courseHistory))
                   .toList(),
             ),
