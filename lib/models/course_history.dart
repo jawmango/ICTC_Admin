@@ -8,8 +8,7 @@ part 'course_history.g.dart';
 class CourseHistory {
   final int? id;
 
-  @JsonKey(name: 'table_name')
-  String? tableName;
+  
 
   @JsonKey(name: 'course_name')
   String courseName;
@@ -20,19 +19,18 @@ class CourseHistory {
   @JsonKey(name: 'occurred_at')
   DateTime? occurredAt;
 
-  @JsonKey(name: 'user_id')
-  String userId;
+  
 
   @JsonKey(name: 'user_email')
   String? userEmail;
 
   CourseHistory({
     this.id,
-    this.tableName,
+    
     required this.courseName,
     this.action,
     this.occurredAt,
-    required this.userId,
+    
     this.userEmail,
   });
 
