@@ -27,10 +27,10 @@ class Course {
 
   
   @JsonKey(name: 'start_date')
-  DateTime? startDate;
+  DateTime startDate;
 
   @JsonKey(name: 'end_date')
-  DateTime? endDate;
+  DateTime endDate;
 
 
 
@@ -47,8 +47,8 @@ class Course {
     this.duration,
     this.schedule,
     this.venue,
-    this.startDate,
-    this.endDate,
+    required this.startDate,
+    required this.endDate,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);

@@ -61,6 +61,8 @@ class Seeds {
       duration: '2 hours',
       schedule: 'Jan 2',
       venue: 'Xavier Hall',
+      startDate: DateTime.utc(2024, 4, 1),
+      endDate: DateTime.utc(2024, 4, 1),
       evaLink: 'Facebook.com',
     ),
   ];
