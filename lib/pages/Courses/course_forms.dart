@@ -20,7 +20,7 @@ class CourseForm extends StatefulWidget {
 }
 
 class _CourseFormState extends State<CourseForm> {
-  late Future<String?> avatarUrl = getImageUrl();
+  late Future<String?> imagerUrl = getImageUrl();
 
   Future<String?> getImageUrl([String? path]) async {
     try {
@@ -171,7 +171,7 @@ class _CourseFormState extends State<CourseForm> {
                       const SnackBar(content: Text("Image uploaded successfully!")));
 
                   setState(() {
-                    avatarUrl = getImageUrl(path);
+                    imagerUrl = getImageUrl(path);
                   });
                 });
               },
@@ -205,7 +205,7 @@ class _CourseFormState extends State<CourseForm> {
               border: Border.all(color: Colors.black12),
             ),
             child: FutureBuilder<String?>(
-              future: avatarUrl,
+              future: imagerUrl,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
