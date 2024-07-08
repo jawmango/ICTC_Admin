@@ -50,7 +50,7 @@ class _MainScreenState extends State<MainScreen> {
       "Dashboard",
       "Finances",
       "List of Trainers",
-      "List of Trainees",
+      "List of Students",
       "List of Programs",
       "List of Courses",
       // "List of Vouchers",
@@ -144,7 +144,7 @@ class _MainScreenState extends State<MainScreen> {
           size: 30,
         ),
         label: Text(
-          "Trainees",
+          "Students",
           style: TextStyle(
             fontSize: 16,
             fontWeight: FontWeight.w400,

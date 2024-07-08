@@ -10,8 +10,7 @@ part 'registration_history.g.dart';
 class RegistrationHistory {
   final int? id;
 
-  @JsonKey(name: 'table_name')
-  String? tableName;
+
 
   @JsonKey(name: 'action')
   String? action;
@@ -19,8 +18,7 @@ class RegistrationHistory {
   @JsonKey(name: 'occurred_at')
   DateTime? occurredAt;
 
-  @JsonKey(name: 'user_id')
-  String userId;
+  
 
   @JsonKey(name: 'user_email')
   String userEmail;
@@ -40,10 +38,10 @@ class RegistrationHistory {
 
   RegistrationHistory({
     this.id,
-    this.tableName,
+    
     this.action,
     this.occurredAt,
-    required this.userId,
+    
     required this.userEmail,
     required this.studentId,
     required this.courseId,
