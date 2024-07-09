@@ -484,7 +484,6 @@ class _CourseFormState extends State<CourseForm> {
           Flexible(
             child: CupertinoTextFormFieldRow(
               controller: evalCon,
-              validator: isNotEmpty,
               prefix: const Row(
                 children: [
                   Text("Evaluation Link",
