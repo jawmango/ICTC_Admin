@@ -20,9 +20,6 @@ class Register {
   @JsonKey(name: 'cert_status')
   bool cert;
 
-  @JsonKey(name: 'payment_status')
-  bool? paymentStatus;
-
   @JsonKey(name: 'eval_status')
   bool eval;
 
@@ -41,7 +38,6 @@ class Register {
     this.cert = false,
     this.attend = false,
     this.bill = false,
-    this.paymentStatus
   });
 
   factory Register.fromJson(Map<String, dynamic> json) => _$RegisterFromJson(json);

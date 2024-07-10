@@ -7,8 +7,10 @@ import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/payment.dart';
 import 'package:ictc_admin/models/register.dart';
 import 'package:ictc_admin/pages/Courses/course_details.dart';
+import 'package:ictc_admin/pages/Courses/register_forms.dart';
 import 'package:ictc_admin/pages/courses/course_viewMore.dart';
 import 'package:ictc_admin/pages/courses/course_forms.dart';
+import 'package:ictc_admin/pages/courses/registration_forms.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ictc_admin/pages/Courses/course_history.dart';
@@ -125,7 +127,8 @@ class _CoursesPageState extends State<CoursesPage> {
                     historyButton(),
                     buildSearchBar(),
                     addButton(),
-                    
+                    const SizedBox(width: 3),
+                    addRegButton(),
                     
                   ],
                 ),
@@ -377,6 +380,92 @@ class _CoursesPageState extends State<CoursesPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CourseForm(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget addRegButton() {
+    return ElevatedButton(
+      style: ButtonStyle(
+        fixedSize: MaterialStateProperty.all(const Size.fromWidth(155)),
+      ),
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return addRegDialog();
+          },
+        );
+      },
+      child: Container(
+        constraints: const BoxConstraints(
+          maxWidth: 160,
+          minHeight: 36.0,
+        ), // min sizes for Material buttons
+        alignment: Alignment.center,
+        child: const Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Icon(
+              CupertinoIcons.add,
+              size: 20,
+              color: Colors.white,
+            ),
+            SizedBox(width: 6),
+            Text(
+              'Registration',
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.end,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget addRegDialog() {
+    return AlertDialog(
+      contentPadding: const EdgeInsets.only(left: 20, right: 30, top: 40),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: FractionalOffset.topRight,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+          const Text(
+            "Register a Student",
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 24,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ],
+      ),
+      content: Flexible(
+        flex: 2,
+        child: SizedBox(
+          width: 550,
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  RegistrationForm(),
                 ],
               ),
             ),
