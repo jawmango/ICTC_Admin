@@ -130,7 +130,7 @@ class _PaymentFormState extends State<PaymentForm> {
         .from('registration')
         .select()
         .eq('course_id', selectedCourse!.id!)
-        .eq('is_approved', false)
+        .eq('is_approved', true)
         .withConverter(
             (data) => data.map((e) => Register.fromJson(e)).toList());
 
