@@ -19,6 +19,7 @@ Course _$CourseFromJson(Map<String, dynamic> json) => Course(
       venue: json['venue'] as String?,
       startDate: DateTime.parse(json['start_date'] as String),
       endDate: DateTime.parse(json['end_date'] as String),
+      isHidden: json['is_hidden'] as bool? ?? false,
     )..students = json['students'];
 
 Map<String, dynamic> _$CourseToJson(Course instance) {
@@ -42,6 +43,7 @@ Map<String, dynamic> _$CourseToJson(Course instance) {
   writeNotNull('venue', instance.venue);
   val['start_date'] = instance.startDate.toIso8601String();
   val['end_date'] = instance.endDate.toIso8601String();
+  val['is_hidden'] = instance.isHidden;
   writeNotNull('students', instance.students);
   return val;
 }

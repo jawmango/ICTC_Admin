@@ -48,6 +48,7 @@ class _CourseFormState extends State<CourseForm> {
       evalCon;
 
   late String? startDateCon, endDateCon;
+  late bool isHiddenCon;
 
   @override
   void initState() {
@@ -64,6 +65,7 @@ class _CourseFormState extends State<CourseForm> {
     scheduleCon = TextEditingController(text: widget.course?.schedule);
     venueCon = TextEditingController(text: widget.course?.venue);
     evalCon = TextEditingController(text: widget.course?.evaLink);
+    isHiddenCon = widget.course?.isHidden ?? false;
 
     startDateCon = widget.course?.startDate != null
         ? DateFormat.yMMMMd().format(widget.course!.startDate!)
@@ -514,6 +516,27 @@ class _CourseFormState extends State<CourseForm> {
               ),
             ),
           ),
+          SizedBox(height: 6),
+    Row(
+      children: [
+        Checkbox(
+          value: isHiddenCon,
+          onChanged: (value) {
+            setState(() {
+              isHiddenCon = value ?? false;
+            });
+          },
+        ),
+        Text(
+          'Hidden',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Colors.black87,
+          ),
+        ),
+      ],
+    ),
           Column(
             children: <Widget>[
               SizedBox(
@@ -608,6 +631,7 @@ class _CourseFormState extends State<CourseForm> {
           schedule: scheduleCon.text,
           venue: venueCon.text,
           evaLink: evalCon.text,
+          isHidden: isHiddenCon,
           startDate: DateFormat.yMMMMd('en_US').parse(startDateCon!),
           endDate: DateFormat.yMMMMd('en_US').parse(endDateCon!),
         );
