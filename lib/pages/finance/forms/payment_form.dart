@@ -300,7 +300,7 @@ class _PaymentFormState extends State<PaymentForm> {
                   color: Color(0xff153faa),
                 ),
                 labelStyle: const TextStyle(fontSize: 14),
-                labelText: "Trainee",
+                labelText: "Student",
                 isDense: true,
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -318,7 +318,7 @@ class _PaymentFormState extends State<PaymentForm> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      Text("Select a Trainee",
+                      Text("Select a Student",
                           style: TextStyle(
                               fontSize: 24, fontWeight: FontWeight.w600)),
                     ],

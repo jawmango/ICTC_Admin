@@ -352,12 +352,12 @@ Widget pdfButton() {
 
     PlutoColumn(
 
-      title: 'Trainee Name',
+      title: 'Student Name',
 
       field: 'name',
       readOnly: true,
       type: PlutoColumnType.text(),
-      filterHintText: 'Search Trainee',
+      filterHintText: 'Search Student',
       textAlign: PlutoColumnTextAlign.right,
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
