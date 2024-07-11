@@ -9,6 +9,7 @@ import 'package:ictc_admin/models/program.dart';
 import 'package:ictc_admin/models/seeds.dart';
 import 'package:ictc_admin/models/trainee.dart';
 import 'package:ictc_admin/pages/finance/forms/payment_form.dart';
+import 'package:ictc_admin/pages/finance/forms/receipt_form.dart';
 import 'package:intl/intl.dart';
 import 'package:pluto_grid_plus/pluto_grid_plus.dart';
 import 'package:pluto_grid_plus_export/pluto_grid_plus_export.dart'
@@ -116,6 +117,80 @@ void exportToPdf() async {
           ),
         ),
       ],
+    );
+  }
+
+   Widget receiptButton(Payment payment)
+  {
+    return TextButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return receiptDialog(payment);
+            },
+          );
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.receipt_long_outlined,
+              size: 20,
+              color: Color(0xff153faa),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text("Receipt"),
+          ],
+        ));
+  }
+
+  Widget receiptDialog(Payment payment) {
+    return AlertDialog(
+      // shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(30))),
+      contentPadding: const EdgeInsets.only(left: 20, right: 30, top: 40),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: FractionalOffset.topRight,
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(receiptDialog);
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+          const Text(
+            "Student Receipt",
+            style: TextStyle(
+                color: Colors.black87,
+                fontSize: 24,
+                fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+      content: Flexible(
+        flex: 2,
+        child: SizedBox(
+          width: 550,
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ReceiptForm(payment: payment),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 
@@ -339,16 +414,6 @@ Widget pdfButton() {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
     ),
-    PlutoColumn(
-      title: 'Course End Date',
-      field: 'courseEnd',
-      readOnly: true,
-      filterHintText: 'Search Course',
-      type: PlutoColumnType.text(),
-      textAlign: PlutoColumnTextAlign.right,
-      titleTextAlign: PlutoColumnTextAlign.center,
-      enableEditingMode: false,
-    ),
 
     PlutoColumn(
 
@@ -453,6 +518,24 @@ Widget pdfButton() {
       width: 120,
     ),
     PlutoColumn(
+      readOnly: true,
+      title: 'Action Buttons',
+      field: 'actions',
+      renderer: (rendererContext) => rendererContext.cell.value as Widget,
+      type: PlutoColumnType.text(),
+      enableEditingMode: false,
+      enableAutoEditing: false,
+      filterWidget: Container(
+        color: Colors.white,
+      ),
+      enableFilterMenuItem: false,
+      enableRowDrag: false,
+      enableRowChecked: false,
+      textAlign: PlutoColumnTextAlign.center,
+      titleTextAlign: PlutoColumnTextAlign.center,
+      enableDropToResize: false,
+    ),
+    PlutoColumn(
       title: 'OR Number',
       filterHintText: 'Search an OR #',
       field: 'orNumber',
@@ -472,26 +555,6 @@ Widget pdfButton() {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
     ),
-    PlutoColumn(
-      readOnly: true,
-      title: 'Actions',
-      field: 'actions',
-      renderer: (rendererContext) => rendererContext.cell.value as Widget,
-      type: PlutoColumnType.text(),
-      enableEditingMode: false,
-      enableAutoEditing: false,
-      filterWidget: Container(
-        color: Colors.white,
-      ),
-      enableFilterMenuItem: false,
-      enableRowDrag: false,
-      enableRowChecked: false,
-      minWidth: 50,
-      width: 120,
-      textAlign: PlutoColumnTextAlign.center,
-      titleTextAlign: PlutoColumnTextAlign.center,
-      enableDropToResize: false,
-    ),
   ];
 
   PlutoRow buildInRow(
@@ -505,8 +568,7 @@ Widget pdfButton() {
         'name': PlutoCell(value: student.toString()),
         'progName': PlutoCell(value: program.title),
         'courseName': PlutoCell(value: course.title),
-        'courseStart': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.startDate!)),
-        'courseEnd': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.endDate!)),
+        'courseStart': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.startDate)),
         'trainingFee': PlutoCell(value: course.cost),
         'discount': PlutoCell(value: payment.discount),
         'amount': PlutoCell(value: payment.totalAmount),
@@ -515,7 +577,8 @@ Widget pdfButton() {
         'actions': PlutoCell(value: Builder(builder: (context) {
           return Row(
             children: [
-              editButton(payment),
+                editButton(payment),
+                receiptButton(payment),
             ],
           );
         })),

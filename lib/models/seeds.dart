@@ -78,7 +78,7 @@ class Seeds {
   static final List<Payment> _payments = [
     Payment(
       id: 1,
-      studentId: _trainees[0].id,
+      studentId: _trainees[0].id!,
       programId: _programs[0].id!,
       courseId: _courses[0].id!,
       discount: 250,

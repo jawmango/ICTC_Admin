@@ -201,7 +201,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
         Register register = Register(
           id: widget.register?.id,
           courseId: selectedCourse!.id!,
-          studentId: selectedTrainee!.id,
+          studentId: selectedTrainee!.id!,
           status: false,
           eval: false,
           cert: false,
