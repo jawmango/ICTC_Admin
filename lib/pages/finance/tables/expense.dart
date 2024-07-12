@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/expense.dart';
+import 'package:ictc_admin/models/payment.dart';
 import 'package:ictc_admin/models/program.dart';
 import 'package:ictc_admin/models/seeds.dart';
 import 'package:ictc_admin/pages/finance/forms/expenses_form.dart';
@@ -34,27 +35,29 @@ class _ExpenseTableState extends State<ExpenseTable> {
   }
 
   Future<List<PlutoRow>> _fetchRows(List<Expense> expenses) async {
-    final futures = expenses.map((e) async {
-      // Fetch program, and course in parallel
-      final programFuture = e.program;
-      final courseFuture = e.course;
+  List<Expense> reversedExpenses = expenses.reversed.toList();
 
-      // Await all of them together
-      final program = await programFuture;
-      final course = await courseFuture;
+  final futures = reversedExpenses.map((e) async {
+    // Fetch program, and course in parallel
+    final programFuture = e.program;
+    final courseFuture = e.course;
 
-      return buildOutRow(
-        expense: e,
-        program: program,
-        course: course,
-      );
-    }).toList();
+    // Await all of them together
+    final program = await programFuture;
+    final course = await courseFuture;
 
-    final List<PlutoRow> rows = await Future.wait(futures);
+    return buildOutRow(
+      expense: e,
+      program: program,
+      course: course,
+    );
+  }).toList();
 
+  final List<PlutoRow> rows = await Future.wait(futures);
 
-    return rows;
-  }
+  return rows;
+}
+
 
   void exportToPdf() async {
     final themeData = pluto_grid_plus_export.ThemeData.withFont(

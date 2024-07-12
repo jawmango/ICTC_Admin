@@ -3,6 +3,7 @@ import 'package:ictc_admin/models/expense.dart';
 import 'package:ictc_admin/models/program.dart';
 import 'package:ictc_admin/models/report.dart';
 import 'package:ictc_admin/models/payment.dart';
+import 'package:ictc_admin/models/net_income.dart';
 import 'package:ictc_admin/models/trainee.dart';
 import 'package:ictc_admin/models/trainer.dart';
 
@@ -88,6 +89,16 @@ class Seeds {
       approved: true,
     ),
   ];
+  static final List<NetIncome> _netIncome= [
+    NetIncome(
+      id: 1,
+      programId: _programs[0].id!,
+      courseId: _courses[0].id!,
+      totalIncome: 2250.0,
+      totalExpense: 2250.0,
+      totalNet: 2250.0,
+    ),
+  ];
 
   static final List<Expense> _expenses = [
     Expense(
@@ -110,6 +121,10 @@ class Seeds {
 
   static Stream<List<Payment>> paymentStream() {
     return Stream.value(_payments);
+  }
+
+  static Stream<List<NetIncome>> netIncomeStream() {
+    return Stream.value(_netIncome);
   }
 
   static Stream<List<Expense>> expenseStream() {
