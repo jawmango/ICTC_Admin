@@ -14,10 +14,14 @@ class Program {
   @JsonKey(name: "description")
   String? description;
 
+  @JsonKey(name: 'is_hidden')
+  bool isHidden;
+
   Program({
     this.id,
     required this.title,
     this.description,
+    this.isHidden = false,
   });
 
   factory Program.fromJson(Map<String, dynamic> json) => _$ProgramFromJson(json);

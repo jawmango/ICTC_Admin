@@ -154,21 +154,30 @@ class _PaymentFormState extends State<PaymentForm> {
 
 // COURSES
   Future<List<Course>> fetchCourses({String? filter}) async {
-    if (selectedProgram == null) return [];
+  if (selectedProgram == null) return [];
 
-    final supabase = Supabase.instance.client;
-    late final List<Course> programCourses;
-    programCourses = await supabase
-        .from('course')
-        .select()
-        .eq('program_id', selectedProgram!.id!)
-        .withConverter((data) => data.map((e) => Course.fromJson(e)).toList());
-    return filter == null
-        ? programCourses
-        : programCourses
-            .where((element) => element.toString().contains(filter))
-            .toList();
+  final supabase = Supabase.instance.client;
+  final List<Course> programCourses = await supabase
+      .from('course')
+      .select()
+      .eq('program_id', selectedProgram!.id!)
+      .withConverter((data) => data.map((e) => Course.fromJson(e)).toList());
+
+  // Update each course's title to concatenate with start and end dates
+  for (var course in programCourses) {
+    final startDate = DateFormat.yMMMMd().format(course.startDate);
+    final endDate = DateFormat.yMMMMd().format(course.endDate);
+    course.title = '${course.title} - $startDate to $endDate';
   }
+
+  return filter == null
+      ? programCourses
+      : programCourses
+          .where((element) => element.toString().contains(filter))
+          .toList();
+}
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -228,64 +237,67 @@ class _PaymentFormState extends State<PaymentForm> {
           const SizedBox(
             height: 6,
           ),
-          DropdownSearch<Course>(
-            asyncItems: (filter) => fetchCourses(),
-            dropdownDecoratorProps: DropDownDecoratorProps(
-              dropdownSearchDecoration: InputDecoration(
-                contentPadding: const EdgeInsets.all(0),
-                isDense: true,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                prefixIcon: const Icon(
-                  Icons.book,
-                  size: 15,
-                  color: Color(0xff153faa),
-                ),
-                labelStyle: const TextStyle(fontSize: 14),
-                labelText: "Course",
-                filled: false,
-              ),
-            ),
-            onChanged: (value) {
-              setState(() => selectedCourse = value);
-              setState(() {
-                courseCostCon.text = selectedCourse!.cost.toString();
-              });
-              setState(() {
-                totalAmountCon.text = (double.parse(courseCostCon.text) -
-                        double.parse(discountCon.text))
-                    .toString();
-              });
-            },
-            selectedItem: selectedCourse,
-            popupProps: PopupProps.dialog(
-                showSearchBox: true,
-                title: Container(
-                  padding: const EdgeInsets.all(30),
-                  child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    children: [
-                      Text("Select a Course",
-                          style: TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.w600)),
-                    ],
-                  ),
-                ),
-                constraints: const BoxConstraints(
-                    maxHeight: 450,
-                    maxWidth: 500,
-                    minWidth: 500,
-                    minHeight: 400)),
-            compareFn: (item1, item2) => item1.id == item2.id,
-            validator: (value) {
-              if (value == null) {
-                return "Select a course.";
-              }
-              return null;
-            },
-          ),
+         DropdownSearch<Course>(
+  asyncItems: (filter) => fetchCourses(),
+  dropdownDecoratorProps: DropDownDecoratorProps(
+    dropdownSearchDecoration: InputDecoration(
+      contentPadding: const EdgeInsets.all(0),
+      isDense: true,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(10),
+      ),
+      prefixIcon: const Icon(
+        Icons.book,
+        size: 15,
+        color: Color(0xff153faa),
+      ),
+      labelStyle: const TextStyle(fontSize: 14),
+      labelText: "Course",
+      filled: false,
+    ),
+  ),
+  onChanged: (value) {
+    setState(() => selectedCourse = value);
+    setState(() {
+      courseCostCon.text = selectedCourse!.cost.toString();
+    });
+    setState(() {
+      totalAmountCon.text = (double.parse(courseCostCon.text) -
+              double.parse(discountCon.text))
+          .toString();
+    });
+  },
+  selectedItem: selectedCourse,
+  popupProps: PopupProps.dialog(
+      showSearchBox: true,
+      title: Container(
+        padding: const EdgeInsets.all(30),
+        child: const Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Text("Select a Course",
+                style: TextStyle(
+                    fontSize: 24, fontWeight: FontWeight.w600)),
+          ],
+        ),
+      ),
+      constraints: const BoxConstraints(
+          maxHeight: 450,
+          maxWidth: 500,
+          minWidth: 500,
+          minHeight: 400)),
+  compareFn: (item1, item2) => item1.id == item2.id,
+  validator: (value) {
+    if (value == null) {
+      return "Select a course.";
+    }
+    return null;
+  },
+  
+),
+
+
           const SizedBox(
             height: 6,
           ),
@@ -541,7 +553,7 @@ class _PaymentFormState extends State<PaymentForm> {
             totalAmount: double.parse(totalAmountCon.text),
             approved: true,
             courseId: selectedCourse!.id!,
-            studentId: selectedTrainee!.id,
+            studentId: selectedTrainee!.id!,
             programId: selectedProgram!.id!,
           );
           print(payment.toJson());

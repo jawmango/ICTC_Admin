@@ -32,6 +32,9 @@ class Course {
   @JsonKey(name: 'end_date')
   DateTime endDate;
 
+  @JsonKey(name: 'is_hidden')
+  bool isHidden;
+
 
 
   var students;
@@ -49,6 +52,7 @@ class Course {
     this.venue,
     required this.startDate,
     required this.endDate,
+    this.isHidden = false,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) => _$CourseFromJson(json);

@@ -28,13 +28,14 @@ class _ProgramFormState extends State<ProgramForm> {
       return null;
     }
   }
-
+  late bool isHiddenCon;
   @override
   void initState() {
     super.initState();
 
     print("program ${widget.program?.id}");
 
+    isHiddenCon = widget.program?.isHidden ?? false;
     progTitleCon = TextEditingController(text: widget.program?.title);
     progDescriptionCon =
         TextEditingController(text: widget.program?.description);
@@ -128,6 +129,27 @@ class _ProgramFormState extends State<ProgramForm> {
               ),
             ),
           ),
+          SizedBox(height: 6),
+    Row(
+      children: [
+        Checkbox(
+          value: isHiddenCon,
+          onChanged: (value) {
+            setState(() {
+              isHiddenCon = value ?? false;
+            });
+          },
+        ),
+        Text(
+          'Hidden',
+          style: TextStyle(
+            fontSize: 14,
+            fontWeight: FontWeight.w400,
+            color: Colors.black87,
+          ),
+        ),
+      ],
+    ),
           Material(
             color: Colors.black12,
             child: InkWell(
@@ -262,6 +284,7 @@ class _ProgramFormState extends State<ProgramForm> {
           id: widget.program?.id,
           title: progTitleCon.text,
           description: progDescriptionCon.text,
+          isHidden: isHiddenCon,
         );
 
         print(program.toJson());

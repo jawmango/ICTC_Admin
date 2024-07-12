@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:ictc_admin/models/trainee.dart';
 import 'package:ictc_admin/pages/trainees/trainees_viewMore.dart';
+import 'package:ictc_admin/pages/trainees/trainees_forms.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TraineesPage extends StatefulWidget {
@@ -80,6 +81,7 @@ class _TraineesPageState extends State<TraineesPage>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buildSearchBar(),
+                    // addButton(),
                   ],
                 ),
               ),
@@ -129,7 +131,7 @@ class _TraineesPageState extends State<TraineesPage>
               borderRadius: BorderRadius.circular(8),
               borderSide: BorderSide.none,
             ),
-            hintText: "Search a Trainee...",
+            hintText: "Search a Student...",
             hintStyle: const TextStyle(
                 color: Colors.black87,
                 fontSize: 14,
@@ -197,6 +199,87 @@ class _TraineesPageState extends State<TraineesPage>
         children: [viewButton(trainee)],
       )),
     ]);
+  }
+
+  Widget addButton() {
+    return ElevatedButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return addDialog();
+          },
+        );
+      },
+      // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: Container(
+        constraints: const BoxConstraints(
+            minWidth: 160, minHeight: 36.0), // min sizes for Material buttons
+        alignment: Alignment.center,
+        child: const Row(children: [
+          Icon(
+            CupertinoIcons.add,
+            size: 20,
+            color: Colors.white,
+          ),
+          SizedBox(width: 6),
+          Text(
+            'Add a Trainee',
+            style: TextStyle(color: Colors.white),
+            textAlign: TextAlign.center,
+          ),
+        ]),
+      ),
+    );
+  }
+
+  Widget addDialog() {
+    return AlertDialog(
+      // shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(30))),
+      contentPadding: const EdgeInsets.only(left: 20, right: 30, top: 40),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: FractionalOffset.topRight,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+          const Text(
+            "Add a Trainee",
+            style: TextStyle(
+                color: Colors.black87,
+                fontSize: 24,
+                fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+      content: Flexible(
+        flex: 2,
+        child: SizedBox(
+          width: 500,
+          height: MediaQuery.of(context).size.height * 0.28,
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TraineesForm(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
   }
 
   Widget viewButton(Trainee trainee) {
