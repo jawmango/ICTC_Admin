@@ -6,7 +6,7 @@ part 'trainee.g.dart';
   includeIfNull: false
 )
 class Trainee {
-  int? id;
+  final int? id;
 
   @JsonKey(name: "first_name")
   String firstName;

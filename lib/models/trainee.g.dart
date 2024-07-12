@@ -7,7 +7,7 @@ part of 'trainee.dart';
 // **************************************************************************
 
 Trainee _$TraineeFromJson(Map<String, dynamic> json) => Trainee(
-      id: (json['id'] as num).toInt(),
+      id: (json['id'] as num?)?.toInt(),
       firstName: json['first_name'] as String,
       middleName: json['middle_name'] as String?,
       lastName: json['last_name'] as String,
@@ -21,10 +21,7 @@ Trainee _$TraineeFromJson(Map<String, dynamic> json) => Trainee(
     )..course = json['course'] as String?;
 
 Map<String, dynamic> _$TraineeToJson(Trainee instance) {
-  final val = <String, dynamic>{
-    'id': instance.id,
-    'first_name': instance.firstName,
-  };
+  final val = <String, dynamic>{};
 
   void writeNotNull(String key, dynamic value) {
     if (value != null) {
@@ -32,6 +29,8 @@ Map<String, dynamic> _$TraineeToJson(Trainee instance) {
     }
   }
 
+  writeNotNull('id', instance.id);
+  val['first_name'] = instance.firstName;
   writeNotNull('middle_name', instance.middleName);
   val['last_name'] = instance.lastName;
   writeNotNull('contact_number', instance.contactNumber);
