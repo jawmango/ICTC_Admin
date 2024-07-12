@@ -17,6 +17,7 @@ import 'package:pluto_grid_plus_export/pluto_grid_plus_export.dart'
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ictc_admin/models/register.dart';
 
+
 class PaymentTable extends StatefulWidget {
   const PaymentTable({super.key});
 
@@ -36,7 +37,9 @@ class _PaymentTableState extends State<PaymentTable> {
   }
 
   Future<List<PlutoRow>> _fetchRows(List<Payment> payments) async {
-    final futures = payments.map((p) async {
+    List<Payment> reversedPayments = payments.reversed.toList();
+
+    final futures = reversedPayments.map((p) async {
       // Fetch student, program, and course in parallel
       final studentFuture = p.student;
       final programFuture = p.program;
@@ -354,7 +357,7 @@ Widget pdfButton() {
         flex: 1,
         child: SizedBox(
           width: 450,
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.55,
           child: const Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: SingleChildScrollView(

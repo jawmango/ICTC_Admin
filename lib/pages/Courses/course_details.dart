@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/register.dart';
+import 'package:ictc_admin/pages/finance/finance_page.dart';
 import 'package:ictc_admin/pages/finance/forms/expenses_form.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -75,13 +76,17 @@ class _CourseDetailsState extends State<CourseDetails> {
       backgroundColor: const Color(0xff19306B),
       appBar: AppBar(
         title: const Text('Course Details'),
-        actions: [ addButtonIncome(),
-                    SizedBox(width: 7),
+        actions: [ 
+                  addfinanceButton(),
+                  SizedBox(width: 7),
+                  addButtonIncome(),
+                  SizedBox(width: 7),
                    addButtonExpense(),
                    SizedBox(width: 7),
                   historyButton(),
                   SizedBox(width: 7),
                   
+
                   ],
         backgroundColor: const Color(0xff19306B),
         elevation: 0,
@@ -472,6 +477,14 @@ class _CourseDetailsState extends State<CourseDetails> {
                 // Handle update error
                 print('Error updating status: $error');
               });
+              if(register.status = index == 0){
+                showDialog(
+            context: context,
+            builder: (context) {
+              return addDialogIncome();
+            },
+          );
+              }
             },
           ),
         ),
@@ -715,7 +728,7 @@ class _CourseDetailsState extends State<CourseDetails> {
         flex: 1,
         child: SizedBox(
           width: 450,
-          height: MediaQuery.of(context).size.height * 0.5,
+          height: MediaQuery.of(context).size.height * 0.55,
           child: const Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
             child: SingleChildScrollView(
@@ -831,7 +844,55 @@ class _CourseDetailsState extends State<CourseDetails> {
       ),
     );
   }
-  
 
+  Widget addfinanceButton() {
+  return ElevatedButton(
+      style: ButtonStyle(
+        backgroundColor: MaterialStateProperty.resolveWith(
+          (states) {
+            // If the button is pressed, return green, otherwise blue
+            if (states.contains(MaterialState.pressed)) {
+              return Color.fromARGB(255, 4, 34, 110);
+              }
+              return const Color(0xff19306B);
+          },
+        ),
+        fixedSize: MaterialStateProperty.all(const Size.fromWidth(145)),
+      ),
+      onPressed: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => const FinancePage(), // Add the path to your finance page
+          ),
+        );
+      },
+      // materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+      // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
+      child: Container(
+        constraints: const BoxConstraints(
+          maxWidth: 1000,
+          minWidth: 100,
+          minHeight: 36.0,
+        ),
+        alignment: Alignment.center,
+        child: const Row(
+          children: [
+            Icon(
+            Icons.grid_view_outlined,
+            color: Colors.white,
+            size: 20,
+          ),
+            Text(
+              ' Finance',
+              style: TextStyle(color: Colors.white),
+              textAlign: TextAlign.center,
+            ),
+          ],
+        ),
+      ),
+    
+  );
+}
 
 }
