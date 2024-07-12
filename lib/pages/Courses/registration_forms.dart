@@ -73,19 +73,34 @@ class _RegistrationFormState extends State<RegistrationForm> {
   }
 
   Future<List<Trainee>> fetchTrainees({String? filter}) async {
-    final supabase = Supabase.instance.client;
-    List<Trainee> trainees;
-    trainees = await supabase
-        .from('student')
-        .select()
-        .withConverter((data) => data.map((e) => Trainee.fromJson(e)).toList());
+  final supabase = Supabase.instance.client;
+  
+  List<Trainee> allTrainees = await supabase
+      .from('student')
+      .select()
+      .withConverter((data) => data.map((e) => Trainee.fromJson(e)).toList());
 
-    return filter == null
-        ? trainees
-        : trainees
-            .where((element) => element.toString().contains(filter))
-            .toList();
+  List<Register> registrations = await supabase
+      .from('registration')
+      .select()
+      .eq('course_id', selectedCourse!.id!)
+      .withConverter((data) => data.map((e) => Register.fromJson(e)).toList());
+
+  List<int> registeredStudentIds = registrations.map((reg) => reg.studentId).toList();
+
+  List<Trainee> filteredTrainees = allTrainees.where((trainee) {
+    return !registeredStudentIds.contains(trainee.id);
+  }).toList();
+
+  if (filter != null && filter.isNotEmpty) {
+    filteredTrainees = filteredTrainees
+        .where((element) => element.toString().contains(filter))
+        .toList();
   }
+
+  return filteredTrainees;
+}
+
 
   @override
   Widget build(BuildContext context) {

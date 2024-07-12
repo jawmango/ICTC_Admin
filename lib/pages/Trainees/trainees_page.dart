@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:ictc_admin/models/trainee.dart';
+import 'package:ictc_admin/pages/Trainees/trainees_forms.dart';
 import 'package:ictc_admin/pages/trainees/trainees_viewMore.dart';
-import 'package:ictc_admin/pages/trainees/trainees_forms.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class TraineesPage extends StatefulWidget {
@@ -81,7 +81,7 @@ class _TraineesPageState extends State<TraineesPage>
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     buildSearchBar(),
-                    // addButton(),
+                    addButton(),
                   ],
                 ),
               ),

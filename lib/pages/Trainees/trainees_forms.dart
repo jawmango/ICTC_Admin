@@ -1,18 +1,26 @@
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:ictc_admin/models/program.dart';
 import 'package:ictc_admin/models/trainee.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+
 class TraineesForm extends StatefulWidget {
+
   const TraineesForm({super.key, this.trainee});
 
   final Trainee? trainee;
 
   @override
   State<TraineesForm> createState() => _TraineesFormState();
+
 }
 
 class _TraineesFormState extends State<TraineesForm> {
+
+
+
   @override
   void initState() {
     super.initState();
@@ -21,13 +29,11 @@ class _TraineesFormState extends State<TraineesForm> {
 
     firstNameCon = TextEditingController(text: widget.trainee?.firstName);
     lastNameCon = TextEditingController(text: widget.trainee?.lastName);
-    contactCon = TextEditingController(text: widget.trainee?.contactNumber);
-    emailCon = TextEditingController(text: widget.trainee?.email);
-    
+
   }
 
   final formKey = GlobalKey<FormState>();
-  late TextEditingController firstNameCon, lastNameCon, contactCon, emailCon;
+  late TextEditingController firstNameCon, lastNameCon;
 
   @override
   Widget build(BuildContext context) {
@@ -35,164 +41,89 @@ class _TraineesFormState extends State<TraineesForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-
-          Row(
-            children: <Widget>[
-              Flexible(
-                child: CupertinoTextFormFieldRow(
-                  controller: firstNameCon,
-                  prefix: const Row(
-                    children: [
-                      Text("First Name",
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400)),
-                      SizedBox(width: 12),
-                    ],
-                  ),
-                  // padding: EdgeInsets.only(left: 90),
-                  placeholder: "e.g. John",
-                  placeholderStyle: const TextStyle(
-                    fontSize: 14, //
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black45,
-                  ),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87,
-                  ),
-                  decoration: BoxDecoration(
-                    // border: ,
-                    border: Border.all(
-                      color: Colors.black87,
-                      width: 0.5,
-                    ),
-                    borderRadius: BorderRadius.circular(18),
-                    // prefixIcon: Icon(Icons.person)
-                  ),
-                ),
+          Flexible(
+            child: CupertinoTextFormFieldRow(
+              controller: firstNameCon,
+              prefix: const Row(
+                children: [
+                  Text("First Name",
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400)),
+                  SizedBox(width: 12),
+                ],
               ),
-
-              // LAST NAME
-              Flexible(
-                child: CupertinoTextFormFieldRow(
-                  controller: lastNameCon,
-                  prefix: const Row(
-                    children: [
-                      Text("Last Name",
-                          style: TextStyle(
-                              color: Colors.black87,
-                              fontSize: 14,
-                              fontWeight: FontWeight.w400)),
-                      SizedBox(width: 12),
-                    ],
-                  ),
-                  // padding: EdgeInsets.only(left: 90),
-                  placeholder: "e.g. De La Cruz",
-                  placeholderStyle: const TextStyle(
-                    fontSize: 14, //
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black45,
-                  ),
-                  style: const TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.w400,
-                    color: Colors.black87,
-                  ),
-                  decoration: BoxDecoration(
-                    // border: ,
-                    border: Border.all(
-                      color: Colors.black87,
-                      width: 0.5,
-                    ),
-                    borderRadius: BorderRadius.circular(18),
-                    // prefixIcon: Icon(Icons.person)
-                  ),
-                ),
+              // padding: EdgeInsets.only(left: 90),
+              placeholder: "e.g. John Rodick",
+              placeholderStyle: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                color: Colors.black45,
               ),
-            ],
-          ),
-
-          //EMAIL ADDRESS
-          CupertinoTextFormFieldRow(
-            controller: emailCon,
-
-            prefix: const Row(
-              children: [
-                Text("Email Address",
-                    style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400)),
-                SizedBox(width: 24),
-              ],
-            ),
-            // padding: EdgeInsets.only(left: 90),
-            placeholder: "e.g. jdoe@gmail.com (N/A if none)",
-            placeholderStyle: const TextStyle(
-              fontSize: 14,
-              color: Colors.black45,
-              fontWeight: FontWeight.w400,
-            ),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.black87,
-            ),
-            decoration: BoxDecoration(
-              // border: ,
-              border: Border.all(
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
                 color: Colors.black87,
-                width: 0.5,
               ),
-              borderRadius: BorderRadius.circular(18),
-              // prefixIcon: Icon(Icons.person)
+              decoration: BoxDecoration(
+                // border: ,
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(18),
+                // prefixIcon: Icon(Icons.person)
+              ),
             ),
           ),
 
-          // CONTACT NUMBER
-
-          CupertinoTextFormFieldRow(
-            controller: contactCon,
-
-            prefix: const Row(
-              children: [
-                Text("Contact Number",
-                    style: TextStyle(
-                        color: Colors.black87,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w400)),
-                SizedBox(width: 12),
-              ],
-            ),
-            // padding: EdgeInsets.only(left: 90),
-            placeholder: "e.g. 09123456789 (N/A if none)",
-            placeholderStyle: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.black45,
-            ),
-            style: const TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              color: Colors.black87,
-            ),
-            decoration: BoxDecoration(
-              // border: ,
-              border: Border.all(
+          // DESCRIPTION
+          Flexible(
+            child: CupertinoTextFormFieldRow(
+              controller: lastNameCon,
+              expands: true,
+              keyboardType: TextInputType.multiline,
+              minLines: null,
+              maxLines: null,
+              prefix: const Row(
+                children: [
+                  Text("Last Name",
+                      style: TextStyle(
+                          color: Colors.black87,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400)),
+                  SizedBox(width: 22),
+                ],
+              ),
+              // padding: EdgeInsets.only(left: 90),
+              placeholder: "Bongat",
+              placeholderStyle: const TextStyle(
+                fontSize: 14, //
+                fontWeight: FontWeight.w400,
+                color: Colors.black45,
+              ),
+              style: const TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
                 color: Colors.black87,
-                width: 0.5,
               ),
-              borderRadius: BorderRadius.circular(18),
-              // prefixIcon: Icon(Icons.person)
+              decoration: BoxDecoration(
+                // border: ,
+                border: Border.all(
+                  color: Colors.black87,
+                  width: 0.5,
+                ),
+                borderRadius: BorderRadius.circular(18),
+                // prefixIcon: Icon(Icons.person)
+              ),
             ),
           ),
-          
+
           const SizedBox(height: 20),
           Row(
             children: [
+              // Expanded(child: SizedBox(child: cancelButton())),
               if (widget.trainee != null)
                 Expanded(
                   flex: 1,
@@ -204,13 +135,14 @@ class _TraineesFormState extends State<TraineesForm> {
                 child: SizedBox(child: saveButton()),
               ),
             ],
-          )
+          ),
+          const SizedBox(height: 20),
         ],
       ),
     );
   }
 
-   Widget saveButton() {
+  Widget saveButton() {
     return ElevatedButton(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith((states) {
@@ -222,24 +154,18 @@ class _TraineesFormState extends State<TraineesForm> {
       ),
       onPressed: () {
         final supabase = Supabase.instance.client;
-
-        if (!formKey.currentState!.validate()) {
-          return;
-        }
-        
         Trainee trainee = Trainee(
           id: widget.trainee?.id,
           firstName: firstNameCon.text,
           lastName: lastNameCon.text,
-          contactNumber: contactCon.text,
-          email: emailCon.text,
+          email: 'none',
         );
 
         print(trainee.toJson());
 
         supabase.from('student').upsert(trainee.toJson()).then((_) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Successfully added trainee."),
+              content: Text("Successfully added trainee: "),
               backgroundColor: Colors.green,
             ));
 
@@ -280,7 +206,7 @@ class _TraineesFormState extends State<TraineesForm> {
           supabase.from('student').delete().eq('id', id).then((_) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text("Successfully deleted registration ${widget.trainee!.toString()}."),
+                content: Text("Successfully deleted trainee ${widget.trainee!.toString()}."),
                 backgroundColor: Colors.orangeAccent,
               )
             );
@@ -291,7 +217,7 @@ class _TraineesFormState extends State<TraineesForm> {
             print(err.toString());
             ScaffoldMessenger.of(context).showSnackBar(SnackBar(
               content: Text(
-                  "Error deleting registration: ${widget.trainee!.toString()}. Please try again."),
+                  "Error deleting trainee: ${widget.trainee!.toString()}. Please try again."),
               backgroundColor: Colors.redAccent,
             ));
           });

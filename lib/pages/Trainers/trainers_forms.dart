@@ -300,18 +300,22 @@ class _TrainersFormState extends State<TrainersForm> {
           contactNumber: contactCon.text,
         );
 
-        supabase.from('trainer').upsert(trainer.toJson()).whenComplete(() {
+        print(trainer.toJson());
+
+        supabase.from('trainer').upsert(trainer.toJson()).then((_) {
           ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-              content: Text("Successfully added trainer: ${widget.trainer!.toString()}."),
+              content: Text("Successfully added trainer."),
               backgroundColor: Colors.green,
             ));
 
           Navigator.of(context).pop();
-        }).catchError((_) {
+        }).onError((err, st) {
+          print(err);
+          print(st);
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Unsuccessful adding trainer. Please try again."),
-              backgroundColor: Colors.redAccent,
-            ));
+            content: Text("Unsuccessful adding trainer. Please try again."),
+            backgroundColor: Colors.redAccent,
+          ));
         });
       },
       child: const Text(
