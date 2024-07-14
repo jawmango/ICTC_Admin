@@ -533,8 +533,10 @@ class _PaymentFormState extends State<PaymentForm> {
     );
   }
 
+   
+
   Widget saveButton() {
-    return FilledButton(
+    return ElevatedButton(
       style: ButtonStyle(
         backgroundColor: MaterialStateProperty.resolveWith((states) {
           if (states.contains(MaterialState.pressed)) {
@@ -544,31 +546,36 @@ class _PaymentFormState extends State<PaymentForm> {
         }),
       ),
       onPressed: () {
-        if (formKey.currentState!.validate()) {
-          final payment = Payment(
-            id: widget.payment?.id,
-            orDate: selectedDate!,
-            orNumber: orNumberCon.text,
-            discount: double.parse(discountCon.text),
-            totalAmount: double.parse(totalAmountCon.text),
-            approved: true,
-            courseId: selectedCourse!.id!,
-            studentId: selectedTrainee!.id!,
-            programId: selectedProgram!.id!,
-          );
-          print(payment.toJson());
+        final supabase = Supabase.instance.client;
+        Payment payment = Payment(
+          id: widget.payment?.id,
+          orDate: selectedDate!,
+          orNumber: orNumberCon.text,
+          discount: double.parse(discountCon.text),
+          totalAmount: double.parse(totalAmountCon.text),
+          approved: true,
+          courseId: selectedCourse!.id!,
+          studentId: selectedTrainee!.id!,
+          programId: selectedProgram!.id!,
+        );
 
-          Supabase.instance.client
-              .from('payment')
-              .upsert(payment.toJson())
-              .then((value) {
-            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-              content: Text("Successfully added!"),
+        print(payment.toJson());
+
+        supabase.from('payment').upsert(payment.toJson()).then((_) {
+          ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text("Successfully added payment"),
               backgroundColor: Colors.green,
             ));
-            Navigator.pop(context);
-          });
-        }
+
+          Navigator.of(context).pop();
+        }).onError((err, st) {
+          print(err);
+          print(st);
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            content: Text("Unsuccessful adding payment. Please try again."),
+            backgroundColor: Colors.redAccent,
+          ));
+        });
       },
       child: const Text(
         "Save",
@@ -577,6 +584,7 @@ class _PaymentFormState extends State<PaymentForm> {
         ),
       ),
     );
+
   }
 
   Widget deleteButton() {

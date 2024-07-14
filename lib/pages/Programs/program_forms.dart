@@ -16,13 +16,13 @@ class ProgramForm extends StatefulWidget {
 }
 
 class _ProgramFormState extends State<ProgramForm> {
-  late Future<String?> avatarUrl = getImageUrl();
+  late Future<String?> programUrl = getImageUrl();
 
-  Future<String?> getImageUrl([String? path]) async {
+  Future<String?> getImageUrl() async {
     try {
       final url = await Supabase.instance.client.storage
           .from('programs')
-          .createSignedUrl('${widget.program?.id}/image.png', 60);
+          .createSignedUrl('${widget.program?.id}/program.png', 60);
       return url;
     } catch (e) {
       return null;
@@ -155,38 +155,31 @@ class _ProgramFormState extends State<ProgramForm> {
             child: InkWell(
               splashColor: Colors.black26,
               onTap: () async {
-                // Select an image
-                final result = await FilePicker.platform.pickFiles(
-                    type: FileType.custom, allowedExtensions: ['png']);
-
-                if (result == null || result.files.isEmpty) {
-                  return;
-                }
-
-                final file = result.files.first;
-                final bytes = file.bytes;
-                final extension = file.extension;
-
-                if (bytes == null || extension == null) {
-                  return;
-                }
-
-                // Upload image to Supabase
-                final supa = Supabase.instance.client;
-                final path = "${widget.program?.id}/image.$extension";
-
-                await supa.storage
-                    .from('programs')
-                    .uploadBinary(path, bytes,
-                        fileOptions: const FileOptions(upsert: true))
-                    .whenComplete(() {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Image uploaded successfully!")));
-
-                  setState(() {
-                    avatarUrl = getImageUrl(path);
-                  });
-                });
+                // select an image
+                            final image = await FilePicker.platform.pickFiles(
+                                type: FileType.custom, allowedExtensions: ['png']);
+                            if (image == null) {
+                              return;
+                            }
+          
+                            // upload image to supabase
+                            final supa = Supabase.instance.client;
+          
+                            print(
+                                "${widget.program?.id}/program.${image.files.first.extension}");
+                            await supa.storage
+                                .from('programs')
+                                .uploadBinary(
+                                    "${widget.program?.id}/program.${image.files.first.extension}",
+                                    image.files.first.bytes!,
+                                    fileOptions: FileOptions(upsert: true))
+                                .whenComplete(() {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text("Image uploaded successfully!")));
+                              setState(() {
+                                programUrl = getImageUrl();
+                              });
+                            });
               },
               child: Container(
                 color: Colors.transparent,
@@ -218,7 +211,7 @@ class _ProgramFormState extends State<ProgramForm> {
               border: Border.all(color: Colors.black12),
             ),
             child: FutureBuilder<String?>(
-              future: avatarUrl,
+              future: programUrl,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());

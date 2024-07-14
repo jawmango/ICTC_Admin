@@ -32,7 +32,7 @@ class _ReceiptFormState extends State<ReceiptForm> {
     receiptUrl = getImageUrl();
   }
 
-  Future<String?> getImageUrl([String? path]) async {
+  Future<String?> getImageUrl() async {
     try {
       final url = await Supabase.instance.client.storage
           .from('receipts')
@@ -76,38 +76,31 @@ class _ReceiptFormState extends State<ReceiptForm> {
             child: InkWell(
               splashColor: Colors.black26,
               onTap: () async {
-                // Select an image
-                final result = await FilePicker.platform.pickFiles(
-                    type: FileType.custom, allowedExtensions: ['png']);
-
-                if (result == null || result.files.isEmpty) {
-                  return;
-                }
-
-                final file = result.files.first;
-                final bytes = file.bytes;
-                final extension = file.extension;
-
-                if (bytes == null || extension == null) {
-                  return;
-                }
-
-                // Upload image to Supabase
-                final supa = Supabase.instance.client;
-                final path = "${widget.payment?.id}/receipt.$extension";
-
-                await supa.storage
-                    .from('receipts')
-                    .uploadBinary(path, bytes,
-                        fileOptions: const FileOptions(upsert: true))
-                    .whenComplete(() {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                      content: Text("Image uploaded successfully!")));
-
-                  setState(() {
-                    receiptUrl = getImageUrl(path); // Update receiptUrl with new image URL
-                  });
-                });
+                 // select an image
+                            final image = await FilePicker.platform.pickFiles(
+                                type: FileType.custom, allowedExtensions: ['png']);
+                            if (image == null) {
+                              return;
+                            }
+          
+                            // upload image to supabase
+                            final supa = Supabase.instance.client;
+          
+                            print(
+                                "${widget.payment?.id}/receipt.${image.files.first.extension}");
+                            await supa.storage
+                                .from('receipts')
+                                .uploadBinary(
+                                    "${widget.payment?.id}/receipt.${image.files.first.extension}",
+                                    image.files.first.bytes!,
+                                    fileOptions: FileOptions(upsert: true))
+                                .whenComplete(() {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text("Image uploaded successfully!")));
+                              setState(() {
+                                receiptUrl = getImageUrl();
+                              });
+                            });
               },
               child: Container(
                 color: Colors.transparent,
