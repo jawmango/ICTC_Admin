@@ -139,6 +139,8 @@ class _CourseFormState extends State<CourseForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+
+          if (widget.course != null)
           Material(
             color: Colors.black12,
             child: InkWell(
@@ -190,6 +192,8 @@ class _CourseFormState extends State<CourseForm> {
               ),
             ),
           ),
+
+          if (widget.course != null)
           Container(
             // IMAGE
             margin: EdgeInsets.only(bottom: 10),

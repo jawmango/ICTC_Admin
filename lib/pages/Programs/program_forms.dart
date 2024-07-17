@@ -150,6 +150,7 @@ class _ProgramFormState extends State<ProgramForm> {
         ),
       ],
     ),
+          if (widget.program != null)
           Material(
             color: Colors.black12,
             child: InkWell(
@@ -201,6 +202,8 @@ class _ProgramFormState extends State<ProgramForm> {
               ),
             ),
           ),
+
+          if (widget.program != null)
           Container(
             // IMAGE
             margin: EdgeInsets.only(bottom: 10),

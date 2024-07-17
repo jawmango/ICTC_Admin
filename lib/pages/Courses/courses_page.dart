@@ -6,6 +6,7 @@ import 'package:data_table_2/data_table_2.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/payment.dart';
 import 'package:ictc_admin/models/register.dart';
+import 'package:ictc_admin/pages/Courses/courseImage_forms.dart';
 import 'package:ictc_admin/pages/Courses/course_details.dart';
 import 'package:ictc_admin/pages/Courses/register_forms.dart';
 import 'package:ictc_admin/pages/courses/course_viewMore.dart';
@@ -295,6 +296,7 @@ class _CoursesPageState extends State<CoursesPage> {
           Row(
             children: [
               editButton(course),
+              imageButton(course),
               viewButton(course),
             ],
           ),
@@ -380,6 +382,80 @@ class _CoursesPageState extends State<CoursesPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   CourseForm(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget imageButton(Course course)
+  {
+    return TextButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return imageDialog(course);
+            },
+          );
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.image,
+              size: 20,
+              color: Color(0xff153faa),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text("Image"),
+          ],
+        ));
+  }
+
+  Widget imageDialog(Course course) {
+    return AlertDialog(
+      // shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(30))),
+      contentPadding: const EdgeInsets.only(left: 20, right: 30, top: 40),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: FractionalOffset.topRight,
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(imageDialog);
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+          const Text(
+            "Course Image",
+            style: TextStyle(
+                color: Colors.black87,
+                fontSize: 24,
+                fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+      content: Flexible(
+        flex: 2,
+        child: SizedBox(
+          width: 550,
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  CourseImageForm(course: course),
                 ],
               ),
             ),
