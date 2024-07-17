@@ -81,7 +81,7 @@ class _MainScreenState extends State<MainScreen> {
       const TraineesPage(),
       const ProgramsPage(),
       const CoursesPage(),
-      const NetIncomePage(),
+      // const NetIncomePage(),
       // const VouchersPage(),
     ];
 
@@ -206,26 +206,26 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
-      NavigationRailDestination(
-        icon: Icon(
-          Icons.playlist_add_check_circle_outlined,
-          color: Colors.white,
-          size: 30,
-        ),
-        selectedIcon: Icon(
-          Icons.playlist_add_check_circle_rounded,
-          color: Colors.white,
-          size: 30,
-        ),
-        label: Text(
-          "Net Income",
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-            color: Colors.white,
-          ),
-        ),
-      ),
+      // NavigationRailDestination(
+      //   icon: Icon(
+      //     Icons.playlist_add_check_circle_outlined,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   selectedIcon: Icon(
+      //     Icons.playlist_add_check_circle_rounded,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   label: Text(
+      //     "Net Income",
+      //     style: TextStyle(
+      //       fontSize: 16,
+      //       fontWeight: FontWeight.w400,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ),
       // NavigationRailDestination(
       //   icon: Icon(
       //     Icons.book_outlined,
@@ -307,8 +307,8 @@ class _MainScreenState extends State<MainScreen> {
         return "program";
       case 5:
         return "course";
-      case 6:
-        return "net";
+      // case 6:
+      //   return "net";
       // case 6:
       //   return "vouchers";
       default:

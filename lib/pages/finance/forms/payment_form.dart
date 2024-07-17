@@ -121,36 +121,77 @@ class _PaymentFormState extends State<PaymentForm> {
   }
 
 // TRAINEES
+  // Future<List<Trainee>> fetchTrainees({String? filter}) async {
+  //   if (selectedCourse == null) return [];
+
+  //   final supabase = Supabase.instance.client;
+
+  //   final registrations = await supabase
+  //       .from('registration')
+  //       .select()
+  //       .eq('course_id', selectedCourse!.id!)
+  //       .eq('is_approved', true)
+  //       .withConverter(
+  //           (data) => data.map((e) => Register.fromJson(e)).toList());
+
+  //   final List<Trainee> trainees = [];
+  //   for (final register in registrations) {
+  //     final trainee = await supabase
+  //         .from('student')
+  //         .select()
+  //         .eq('id', register.studentId)
+  //         .limit(1)
+  //         .withConverter((data) => Trainee.fromJson(data.first));
+  //     trainees.add(trainee);
+  //   }
+
+  //   return filter == null
+  //       ? trainees
+  //       : trainees
+  //           .where((element) => element.toString().contains(filter))
+  //           .toList();
+  // }
+
   Future<List<Trainee>> fetchTrainees({String? filter}) async {
-    if (selectedCourse == null) return [];
+  if (selectedCourse == null) return [];
+  final supabase = Supabase.instance.client;
+  
+  List<Trainee> allTrainees = await supabase
+      .from('student')
+      .select()
+      .withConverter((data) => data.map((e) => Trainee.fromJson(e)).toList());
 
-    final supabase = Supabase.instance.client;
+  List<Register> registrations = await supabase
+      .from('registration')
+      .select()
+      .eq('course_id', selectedCourse!.id!)
+      .withConverter((data) => data.map((e) => Register.fromJson(e)).toList());
 
-    final registrations = await supabase
-        .from('registration')
-        .select()
-        .eq('course_id', selectedCourse!.id!)
-        .eq('is_approved', true)
-        .withConverter(
-            (data) => data.map((e) => Register.fromJson(e)).toList());
+  List<Payment> payments = await supabase
+      .from('payment')
+      .select()
+      .eq('course_id', selectedCourse!.id!)
+      .withConverter((data) => data.map((e) => Payment.fromJson(e)).toList());
 
-    final List<Trainee> trainees = [];
-    for (final register in registrations) {
-      final trainee = await supabase
-          .from('student')
-          .select()
-          .eq('id', register.studentId)
-          .limit(1)
-          .withConverter((data) => Trainee.fromJson(data.first));
-      trainees.add(trainee);
-    }
+  List<int> registeredStudentIds = registrations.map((reg) => reg.studentId).toList();
+  List<int> paidStudentIds = payments.map((pay) => pay.studentId).toList();
 
-    return filter == null
-        ? trainees
-        : trainees
-            .where((element) => element.toString().contains(filter))
-            .toList();
+  List<Trainee> regTrainees = allTrainees.where((trainee) {
+    return registeredStudentIds.contains(trainee.id);
+  }).toList();
+
+  List<Trainee> filteredTrainees = regTrainees.where((trainee) {
+    return !paidStudentIds.contains(trainee.id);
+  }).toList();
+
+  if (filter != null && filter.isNotEmpty) {
+    filteredTrainees = filteredTrainees
+        .where((element) => element.toString().contains(filter))
+        .toList();
   }
+
+  return filteredTrainees;
+}
 
 // COURSES
   Future<List<Course>> fetchCourses({String? filter}) async {

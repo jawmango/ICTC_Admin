@@ -215,7 +215,7 @@ class _TraineesPageState extends State<TraineesPage>
       // shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
       child: Container(
         constraints: const BoxConstraints(
-            minWidth: 160, minHeight: 36.0), // min sizes for Material buttons
+            minWidth: 20, minHeight: 36.0), // min sizes for Material buttons
         alignment: Alignment.center,
         child: const Row(children: [
           Icon(
@@ -223,7 +223,7 @@ class _TraineesPageState extends State<TraineesPage>
             size: 20,
             color: Colors.white,
           ),
-          SizedBox(width: 6),
+          SizedBox(width: 3),
           Text(
             'Add a Student',
             style: TextStyle(color: Colors.white),

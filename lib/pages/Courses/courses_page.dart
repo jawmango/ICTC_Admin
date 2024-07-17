@@ -487,6 +487,7 @@ class _CoursesPageState extends State<CoursesPage> {
         child: const Row(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            SizedBox(width: 6),
             Icon(
               CupertinoIcons.add,
               size: 20,

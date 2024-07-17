@@ -436,6 +436,7 @@ Widget pdfButton() {
     PlutoColumn(
       title: 'Training Fee',
       field: 'trainingFee',
+      width: 195,
       readOnly: true,
       filterWidget: Container(
         color: Colors.white,
@@ -485,6 +486,7 @@ Widget pdfButton() {
       minWidth: 50,
       width: 120,
       enableEditingMode: false,
+      enableSorting: true,
     ),
     PlutoColumn(
       title: 'Amount',
@@ -520,6 +522,7 @@ Widget pdfButton() {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
       enableDropToResize: false,
+      enableSorting: true,
       minWidth: 50,
       width: 120,
     ),

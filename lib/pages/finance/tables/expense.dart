@@ -241,6 +241,7 @@ Widget receiptButton(Expense expense)
         color: Colors.white,
       ),
       enableFilterMenuItem: false,
+      enableSorting: true,
       type: PlutoColumnType.number(
         negative: false,
         format: 'P#,###',

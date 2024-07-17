@@ -119,8 +119,8 @@ class _NetIncomeTableState extends State<NetIncomeTable> {
 
     PlutoRow row = PlutoRow(
       cells: {
-        'courseName': PlutoCell(value: course.title),
         'programName': PlutoCell(value: programName.toString()),
+        'courseName': PlutoCell(value: course.title),
         'courseStart': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.startDate)),
         'courseEnd': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.endDate)),
         'totalIncome': PlutoCell(value: totalIncome.toString()),
@@ -209,8 +209,8 @@ void exportToPdf() async {
   // IN (Income)
   List<PlutoColumn> inColumns = [
     PlutoColumn(
-      title: 'Course Name',
-      field: 'courseName',
+      title: 'Program Name',
+      field: 'programName',
       readOnly: true,
       filterHintText: 'Search Course',
       type: PlutoColumnType.text(),
@@ -219,8 +219,8 @@ void exportToPdf() async {
       enableEditingMode: false,
     ),
     PlutoColumn(
-      title: 'Program Name',
-      field: 'programName',
+      title: 'Course Name',
+      field: 'courseName',
       readOnly: true,
       filterHintText: 'Search Course',
       type: PlutoColumnType.text(),
@@ -253,7 +253,7 @@ void exportToPdf() async {
       field: 'totalIncome',
       readOnly: true,
       type: PlutoColumnType.number(),
-      backgroundColor: Colors.yellow.withOpacity(0.1),
+      backgroundColor: Colors.orange.withOpacity(0.1),
       filterWidget: Container(
         color: Colors.white,
       ),
@@ -268,7 +268,7 @@ void exportToPdf() async {
             return [
               const TextSpan(
                 text: 'Total Income',
-                style: TextStyle(color: Colors.yellow),
+                style: TextStyle(color: Colors.orange),
               ),
               const TextSpan(text: ' : '),
               TextSpan(
@@ -282,6 +282,7 @@ void exportToPdf() async {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
       enableDropToResize: false,
+      enableSorting: true,
     ),
     PlutoColumn(
       title: 'Total Expenses',
@@ -317,6 +318,7 @@ void exportToPdf() async {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
       enableDropToResize: false,
+      enableSorting: true,
     ),
     PlutoColumn(
       title: 'Net Income',
@@ -353,6 +355,7 @@ void exportToPdf() async {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
       enableDropToResize: false,
+      enableSorting: true,
     ),
   ];
 
@@ -496,3 +499,5 @@ class ClassYouImplemented implements PlutoFilterType {
 
   const ClassYouImplemented();
 }
+
+
