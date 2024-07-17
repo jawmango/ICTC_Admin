@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ictc_admin/pages/auth/auth_gate.dart';
 import 'package:ictc_admin/utils/validators.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -24,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   
   final formKey = GlobalKey<FormState>();
   late TextEditingController emailCon, passwordCon;
+  
 
   void login() async {
     if (!formKey.currentState!.validate()) return;
@@ -38,6 +40,25 @@ class _LoginPageState extends State<LoginPage> {
     //   snackbarKey.currentState!.showSnackBar(
     //       SnackBar(content: Text(e.message ?? "Error! ${e.code}")));
     // }
+    await Supabase.instance.client.auth
+        .signInWithPassword(email: emailCon.text, password: passwordCon.text)
+        .then((value) {
+      if (value.session?.user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Successfully logged in!")));
+
+        Navigator.pushReplacement(
+    context,
+    MaterialPageRoute(builder: (context) => const AuthGate()),  // Replace HomePage with your actual home page class
+  );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text("Invalid email and/or password!")));
+      }
+    }).onError((AuthException e, _) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.message)));
+    });
   }
 
   @override
@@ -92,7 +113,7 @@ class _LoginPageState extends State<LoginPage> {
                                 const SizedBox(
                                   height: 20,
                                 ),
-                                
+                                buildForm(context),
                                 Column(
                                   children: [
                                     const Row(
@@ -236,7 +257,7 @@ Form buildForm(context) {
         // hoverColor: const Color(0xff153faa).withOpacity(0.8),
         // highlightColor: const Color(0xff153faa).withOpacity(0.4),
         // splashColor: const Color(0xff153faa).withOpacity(1),
-        onTap: () {},
+        onTap: () {login();},
         child: Container(
           alignment: Alignment.center,
           padding: const EdgeInsets.symmetric(vertical: 8),

@@ -14,29 +14,29 @@ import 'package:file_picker/file_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-class ReceiptForm extends StatefulWidget {
-  const ReceiptForm({super.key, this.payment,});
+class CourseImageForm extends StatefulWidget {
+  const CourseImageForm({super.key, this.course,});
 
-  final Payment? payment;
+  final Course? course;
 
   @override
-  State<ReceiptForm> createState() => _ReceiptFormState();
+  State<CourseImageForm> createState() => _CourseImageFormState();
 }
 
-class _ReceiptFormState extends State<ReceiptForm> {
-  late Future<String?> receiptUrl;
+class _CourseImageFormState extends State<CourseImageForm> {
+  late Future<String?> imageUrl;
 
   @override
   void initState() {
     super.initState();
-    receiptUrl = getImageUrl();
+    imageUrl = getImageUrl();
   }
 
   Future<String?> getImageUrl() async {
     try {
       final url = await Supabase.instance.client.storage
-          .from('receipts')
-          .createSignedUrl('${widget.payment?.id}/receipt.png', 60);
+          .from('images')
+          .createSignedUrl('${widget.course?.id}/image.png', 60);
       return url;
     } catch (e) {
       return null;
@@ -47,8 +47,8 @@ class _ReceiptFormState extends State<ReceiptForm> {
   Future<void> downloadImage() async {
   try {
     final url = await Supabase.instance.client.storage
-        .from('receipts')
-        .createSignedUrl('${widget.payment?.id}/receipt.png', 60);
+        .from('images')
+        .createSignedUrl('${widget.course?.id}/image.png', 60);
     if (url != null) {
       await launch(url);
     } else {
@@ -87,18 +87,18 @@ class _ReceiptFormState extends State<ReceiptForm> {
                             final supa = Supabase.instance.client;
           
                             print(
-                                "${widget.payment?.id}/receipt.${image.files.first.extension}");
+                                "${widget.course?.id}/image.${image.files.first.extension}");
                             await supa.storage
-                                .from('receipts')
+                                .from('images')
                                 .uploadBinary(
-                                    "${widget.payment?.id}/receipt.${image.files.first.extension}",
+                                    "${widget.course?.id}/image.${image.files.first.extension}",
                                     image.files.first.bytes!,
                                     fileOptions: FileOptions(upsert: true))
                                 .whenComplete(() {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text("Image uploaded successfully!")));
                               setState(() {
-                                receiptUrl = getImageUrl();
+                                imageUrl = getImageUrl();
                               });
                             });
               },
@@ -133,7 +133,7 @@ class _ReceiptFormState extends State<ReceiptForm> {
               border: Border.all(color: Colors.black12),
             ),
             child: FutureBuilder<String?>(
-              future: receiptUrl,
+              future: imageUrl,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());

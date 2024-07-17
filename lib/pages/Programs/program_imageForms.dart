@@ -14,29 +14,29 @@ import 'package:file_picker/file_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-class ReceiptForm extends StatefulWidget {
-  const ReceiptForm({super.key, this.payment,});
+class ProgramImageForm extends StatefulWidget {
+  const ProgramImageForm({super.key, this.program,});
 
-  final Payment? payment;
+  final Program? program;
 
   @override
-  State<ReceiptForm> createState() => _ReceiptFormState();
+  State<ProgramImageForm> createState() => _ProgramImageFormState();
 }
 
-class _ReceiptFormState extends State<ReceiptForm> {
-  late Future<String?> receiptUrl;
+class _ProgramImageFormState extends State<ProgramImageForm> {
+  late Future<String?> programUrl;
 
   @override
   void initState() {
     super.initState();
-    receiptUrl = getImageUrl();
+    programUrl = getImageUrl();
   }
 
   Future<String?> getImageUrl() async {
     try {
       final url = await Supabase.instance.client.storage
-          .from('receipts')
-          .createSignedUrl('${widget.payment?.id}/receipt.png', 60);
+          .from('programs')
+          .createSignedUrl('${widget.program?.id}/program.png', 60);
       return url;
     } catch (e) {
       return null;
@@ -47,8 +47,8 @@ class _ReceiptFormState extends State<ReceiptForm> {
   Future<void> downloadImage() async {
   try {
     final url = await Supabase.instance.client.storage
-        .from('receipts')
-        .createSignedUrl('${widget.payment?.id}/receipt.png', 60);
+        .from('programs')
+        .createSignedUrl('${widget.program?.id}/program.png', 60);
     if (url != null) {
       await launch(url);
     } else {
@@ -87,18 +87,18 @@ class _ReceiptFormState extends State<ReceiptForm> {
                             final supa = Supabase.instance.client;
           
                             print(
-                                "${widget.payment?.id}/receipt.${image.files.first.extension}");
+                                "${widget.program?.id}/program.${image.files.first.extension}");
                             await supa.storage
-                                .from('receipts')
+                                .from('programs')
                                 .uploadBinary(
-                                    "${widget.payment?.id}/receipt.${image.files.first.extension}",
+                                    "${widget.program?.id}/program.${image.files.first.extension}",
                                     image.files.first.bytes!,
                                     fileOptions: FileOptions(upsert: true))
                                 .whenComplete(() {
                               ScaffoldMessenger.of(context).showSnackBar(SnackBar(
                                   content: Text("Image uploaded successfully!")));
                               setState(() {
-                                receiptUrl = getImageUrl();
+                                programUrl = getImageUrl();
                               });
                             });
               },
@@ -133,7 +133,7 @@ class _ReceiptFormState extends State<ReceiptForm> {
               border: Border.all(color: Colors.black12),
             ),
             child: FutureBuilder<String?>(
-              future: receiptUrl,
+              future: programUrl,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());

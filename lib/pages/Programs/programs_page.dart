@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:data_table_2/data_table_2.dart';
 import 'package:ictc_admin/models/program.dart';
+import 'package:ictc_admin/pages/Programs/program_imageForms.dart';
 import 'package:ictc_admin/pages/programs/program_forms.dart';
 import 'package:ictc_admin/pages/programs/programs_viewMore.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -196,8 +197,9 @@ class _ProgramsPageState extends State<ProgramsPage>
       DataCell(Row(
         children: [
           editButton(program),
-          const Padding(padding: EdgeInsets.all(5)),
-          viewButton(program)
+          imageButton(program),
+          // const Padding(padding: EdgeInsets.all(5)),
+          viewButton(program),
         ],
       )),
     ]);
@@ -273,6 +275,80 @@ class _ProgramsPageState extends State<ProgramsPage>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   ProgramForm(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget imageButton(Program program)
+  {
+    return TextButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return imageDialog(program);
+            },
+          );
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.image,
+              size: 20,
+              color: Color(0xff153faa),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text("Image"),
+          ],
+        ));
+  }
+
+  Widget imageDialog(Program program) {
+    return AlertDialog(
+      // shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(30))),
+      contentPadding: const EdgeInsets.only(left: 20, right: 30, top: 40),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: FractionalOffset.topRight,
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(imageDialog);
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+          const Text(
+            "Program Image",
+            style: TextStyle(
+                color: Colors.black87,
+                fontSize: 24,
+                fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+      content: Flexible(
+        flex: 2,
+        child: SizedBox(
+          width: 550,
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  ProgramImageForm(program: program),
                 ],
               ),
             ),

@@ -2,7 +2,6 @@ import 'package:dropdown_search/dropdown_search.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/expense.dart';
 import 'package:ictc_admin/models/program.dart';
-import 'package:ictc_admin/models/net_income.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

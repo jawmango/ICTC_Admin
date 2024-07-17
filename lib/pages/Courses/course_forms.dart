@@ -20,9 +20,9 @@ class CourseForm extends StatefulWidget {
 }
 
 class _CourseFormState extends State<CourseForm> {
-  late Future<String?> imagerUrl = getImageUrl();
+  late Future<String?> imageUrl = getImageUrl();
 
-  Future<String?> getImageUrl([String? path]) async {
+  Future<String?> getImageUrl() async {
     try {
       final url = await Supabase.instance.client.storage
           .from('images')
@@ -139,44 +139,39 @@ class _CourseFormState extends State<CourseForm> {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+
+          if (widget.course != null)
           Material(
             color: Colors.black12,
             child: InkWell(
               splashColor: Colors.black26,
               onTap: () async {
-                // Select an image
-                final result = await FilePicker.platform.pickFiles(
-                    type: FileType.custom, allowedExtensions: ['png']);
-
-                if (result == null || result.files.isEmpty) {
-                  return;
-                }
-
-                final file = result.files.first;
-                final bytes = file.bytes;
-                final extension = file.extension;
-
-                if (bytes == null || extension == null) {
-                  return;
-                }
-
-                // Upload image to Supabase
-                final supa = Supabase.instance.client;
-                final path = "${widget.course?.id}/image.$extension";
-
-                await supa.storage
-                    .from('images')
-                    .uploadBinary(path, bytes,
-                        fileOptions: const FileOptions(upsert: true))
-                    .whenComplete(() {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Image uploaded successfully!")));
-
-                  setState(() {
-                    imagerUrl = getImageUrl(path);
-                  });
-                });
-              },
+                            // select an image
+                            final image = await FilePicker.platform.pickFiles(
+                                type: FileType.custom, allowedExtensions: ['png']);
+                            if (image == null) {
+                              return;
+                            }
+          
+                            // upload image to supabase
+                            final supa = Supabase.instance.client;
+          
+                            print(
+                                "${widget.course?.id}/image.${image.files.first.extension}");
+                            await supa.storage
+                                .from('images')
+                                .uploadBinary(
+                                    "${widget.course?.id}/image.${image.files.first.extension}",
+                                    image.files.first.bytes!,
+                                    fileOptions: FileOptions(upsert: true))
+                                .whenComplete(() {
+                              ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                                  content: Text("Image uploaded successfully!")));
+                              setState(() {
+                                imageUrl = getImageUrl();
+                              });
+                            });
+                          },
               child: Container(
                 color: Colors.transparent,
                 height: 40,
@@ -197,6 +192,8 @@ class _CourseFormState extends State<CourseForm> {
               ),
             ),
           ),
+
+          if (widget.course != null)
           Container(
             // IMAGE
             margin: EdgeInsets.only(bottom: 10),
@@ -207,7 +204,7 @@ class _CourseFormState extends State<CourseForm> {
               border: Border.all(color: Colors.black12),
             ),
             child: FutureBuilder<String?>(
-              future: imagerUrl,
+              future: imageUrl,
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
