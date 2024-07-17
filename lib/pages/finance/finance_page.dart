@@ -6,6 +6,7 @@ import 'package:ictc_admin/models/payment.dart';
 import 'package:ictc_admin/models/seeds.dart';
 import 'package:ictc_admin/pages/finance/forms/expenses_form.dart';
 import 'package:ictc_admin/pages/finance/tables/expense.dart';
+import 'package:ictc_admin/pages/finance/tables/net_income.dart';
 import 'package:ictc_admin/pages/finance/tables/payment.dart';
 import 'package:ictc_admin/pages/finance/forms/payment_form.dart';
 
@@ -45,7 +46,7 @@ class _FinancePageState extends State<FinancePage>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
-        length: 3,
+        length: 4,
         child: Scaffold(
           backgroundColor: const Color(0xfff1f5fb),
           appBar: AppBar(
@@ -55,6 +56,7 @@ class _FinancePageState extends State<FinancePage>
               tabs: [
                 Tab(text: 'Income'),
                 Tab(text: 'Expenses'),
+                Tab(text: 'Net Income')
               ],
             ),
           ),
@@ -68,6 +70,7 @@ class _FinancePageState extends State<FinancePage>
                   children: [
                    PaymentTable(),
                     ExpenseTable(),
+                    NetIncomeTable(),
                   ],
                 ),
               ),

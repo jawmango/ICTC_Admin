@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ictc_admin/pages/NetIncome/netIncome_page.dart';
 import 'package:ictc_admin/pages/courses/courses_page.dart';
 import 'package:ictc_admin/pages/dashboard/dashboard_page.dart';
 import 'package:ictc_admin/pages/finance/finance_page.dart';
@@ -53,6 +54,7 @@ class _MainScreenState extends State<MainScreen> {
       "List of Students",
       "List of Programs",
       "List of Courses",
+      "Net Income",
       // "List of Vouchers",
     ];
 
@@ -68,6 +70,7 @@ class _MainScreenState extends State<MainScreen> {
       const TraineesPage(),
       const ProgramsPage(),
       const CoursesPage(),
+      const NetIncomePage(),
       // const VouchersPage(),
     ];
 
@@ -192,6 +195,26 @@ class _MainScreenState extends State<MainScreen> {
           ),
         ),
       ),
+      NavigationRailDestination(
+        icon: Icon(
+          Icons.playlist_add_check_circle_outlined,
+          color: Colors.white,
+          size: 30,
+        ),
+        selectedIcon: Icon(
+          Icons.playlist_add_check_circle_rounded,
+          color: Colors.white,
+          size: 30,
+        ),
+        label: Text(
+          "Net Income",
+          style: TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w400,
+            color: Colors.white,
+          ),
+        ),
+      ),
       // NavigationRailDestination(
       //   icon: Icon(
       //     Icons.book_outlined,
@@ -273,6 +296,8 @@ class _MainScreenState extends State<MainScreen> {
         return "program";
       case 5:
         return "course";
+      case 6:
+        return "net";
       // case 6:
       //   return "vouchers";
       default:
