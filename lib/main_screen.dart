@@ -12,6 +12,7 @@ import 'package:ictc_admin/pages/Vouchers/vouchers_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ictc_admin/pages/courses/course_history.dart';
 import 'package:ictc_admin/pages/programs/program_history.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -25,21 +26,31 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSelectedIndex();
   }
 
   int _selectedIndex = 0;
-  PageController pageController = PageController(
-    keepPage: true,
-  );
+  PageController pageController = PageController();
 
   SearchController searchController = SearchController();
 
-  void onDestinationChanged(int value) {
+   Future<void> _loadSelectedIndex() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedIndex = prefs.getInt('selectedIndex') ?? 0; // default to 0 if not found
+    });
+    pageController.jumpToPage(_selectedIndex);
+  }
+
+  void onDestinationChanged(int value) async {
     setState(() {
       _selectedIndex = value;
       pageController.animateToPage(value,
           duration: const Duration(milliseconds: 400), curve: Curves.ease);
     });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('selectedIndex', value); // save the selected index
+    
   }
 
   void logout() async {
@@ -395,17 +406,20 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  
+
   NavigationRail buildNavRail(List<NavigationRailDestination> destinations) {
     return NavigationRail(
       backgroundColor: const Color(0xff19306B),
       destinations: destinations,
       selectedIndex: _selectedIndex,
       onDestinationSelected: (int value) {
-        setState(() {
-          _selectedIndex = value;
-          pageController.animateToPage(value,
-              duration: const Duration(milliseconds: 400), curve: Curves.ease);
-        });
+        // setState(() {
+        //   _selectedIndex = value;
+        //   pageController.animateToPage(value,
+        //       duration: const Duration(milliseconds: 400), curve: Curves.ease);
+        // });
+        onDestinationChanged(value);
       },
       useIndicator: false,
       extended: true,

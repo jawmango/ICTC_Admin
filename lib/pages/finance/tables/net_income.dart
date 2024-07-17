@@ -37,6 +37,22 @@ class _NetIncomeTableState extends State<NetIncomeTable> {
     super.initState();
   }
 
+   Future<String> fetchProgram(int programId) async {
+
+  final programFetched = await Supabase.instance.client
+      .from('program')
+      .select('title')
+      .eq('id', programId)
+      .single()
+      .then((response) {
+              final programName = response['title'] as String;
+              return programName;
+            });
+
+      final String title = programFetched;
+      return title;
+  }
+
   Future<int> fetchPayments(int courseId) async {
   final paymentsFetched = await Supabase.instance.client
       .from('payment')
@@ -99,14 +115,14 @@ class _NetIncomeTableState extends State<NetIncomeTable> {
     var netIncome = await fetchPayments(course.id!);
     var totalIncome = await fetchIncome(course.id!);
     var totalExpenses = await fetchExpenses(course.id!);
+    var programName = await fetchProgram(course.programId!);
 
     PlutoRow row = PlutoRow(
       cells: {
         'courseName': PlutoCell(value: course.title),
-        'programName': PlutoCell(value: course.programId),
+        'programName': PlutoCell(value: programName.toString()),
         'courseStart': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.startDate)),
         'courseEnd': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.endDate)),
-        'trainingFee': PlutoCell(value: course.cost),
         'totalIncome': PlutoCell(value: totalIncome.toString()),
         'totalExpenses':PlutoCell(value: totalExpenses.toString()),
         'amount': PlutoCell(value: netIncome.toString()),
@@ -170,7 +186,7 @@ void exportToPdf() async {
                   children: [csvButton(), pdfButton()],
                 ),
               ),
-              buildInDataTable(),
+              Expanded(child: buildInDataTable()),
             ],
           ),
         ),
@@ -233,27 +249,11 @@ void exportToPdf() async {
       enableEditingMode: false,
     ),
     PlutoColumn(
-      title: 'Training Fee',
-      field: 'trainingFee',
-      readOnly: true,
-      filterWidget: Container(
-        color: Colors.white,
-      ),
-      enableFilterMenuItem: false,
-      type: PlutoColumnType.number(
-        negative: false,
-        format: 'P#,###',
-      ),
-
-      textAlign: PlutoColumnTextAlign.right,
-      titleTextAlign: PlutoColumnTextAlign.center,
-      enableEditingMode: false,
-    ),
-    PlutoColumn(
       title: 'Total Income',
       field: 'totalIncome',
       readOnly: true,
       type: PlutoColumnType.number(),
+      backgroundColor: Colors.yellow.withOpacity(0.1),
       filterWidget: Container(
         color: Colors.white,
       ),
@@ -263,12 +263,12 @@ void exportToPdf() async {
           rendererContext: rendererContext,
           type: PlutoAggregateColumnType.sum,
           format: 'P#,###',
-          alignment: Alignment.center,
+          alignment: Alignment.centerRight,
           titleSpanBuilder: (text) {
             return [
               const TextSpan(
                 text: 'Total Income',
-                style: TextStyle(color: Colors.green),
+                style: TextStyle(color: Colors.yellow),
               ),
               const TextSpan(text: ' : '),
               TextSpan(
@@ -282,14 +282,13 @@ void exportToPdf() async {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
       enableDropToResize: false,
-      minWidth: 50,
-      width: 120,
     ),
     PlutoColumn(
       title: 'Total Expenses',
       field: 'totalExpenses',
       readOnly: true,
       type: PlutoColumnType.number(),
+      backgroundColor: Colors.red.withOpacity(0.1),
       filterWidget: Container(
         color: Colors.white,
       ),
@@ -299,12 +298,12 @@ void exportToPdf() async {
           rendererContext: rendererContext,
           type: PlutoAggregateColumnType.sum,
           format: 'P#,###',
-          alignment: Alignment.center,
+          alignment: Alignment.centerRight,
           titleSpanBuilder: (text) {
             return [
               const TextSpan(
                 text: 'Total Expenses',
-                style: TextStyle(color: Colors.green),
+                style: TextStyle(color: Colors.red),
               ),
               const TextSpan(text: ' : '),
               TextSpan(
@@ -318,14 +317,14 @@ void exportToPdf() async {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
       enableDropToResize: false,
-      minWidth: 50,
-      width: 120,
     ),
     PlutoColumn(
       title: 'Net Income',
       field: 'amount',
       readOnly: true,
       type: PlutoColumnType.number(),
+      width: 235,
+      backgroundColor: Colors.green.withOpacity(0.1),
       filterWidget: Container(
         color: Colors.white,
       ),
@@ -335,11 +334,11 @@ void exportToPdf() async {
           rendererContext: rendererContext,
           type: PlutoAggregateColumnType.sum,
           format: 'P#,###',
-          alignment: Alignment.center,
+          alignment: Alignment.centerRight,
           titleSpanBuilder: (text) {
             return [
               const TextSpan(
-                text: 'Net Income',
+                text: 'Total Net Income',
                 style: TextStyle(color: Colors.green),
               ),
               const TextSpan(text: ' : '),
@@ -354,8 +353,6 @@ void exportToPdf() async {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
       enableDropToResize: false,
-      minWidth: 50,
-      width: 120,
     ),
   ];
 
@@ -364,6 +361,7 @@ void exportToPdf() async {
   Widget buildInDataTable() {
     return Flexible(
       child: Container(
+        width: double.infinity,
         padding: const EdgeInsets.all(30),
         child: StreamBuilder(
             stream: _courses,

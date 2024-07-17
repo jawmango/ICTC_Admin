@@ -604,6 +604,10 @@ class _PaymentFormState extends State<PaymentForm> {
           supabase.from('payment').delete().eq('id', id).whenComplete(() {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Delete successful!")));
+          supabase
+          .storage
+          .from('receipts')
+          .remove(['${id}_p/receipt.png']);
 
             Navigator.of(context).pop();
           }).catchError((_) {

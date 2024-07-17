@@ -82,19 +82,19 @@ class _NetIncomePageState extends State<NetIncomePage> {
   return net;
   }
 
-  Future<int> fetchExpenses(int courseId) async {
-  final paymentsFetched = await Supabase.instance.client
-      .from('payment')
-      .select('total_amount')
-      .eq('course_id', courseId)
-      .withConverter((list) {
-          return list.map((data) => data['total_amount'] as int).toList();
-  });
+  // Future<int> fetchExpenses(int courseId) async {
+  // final paymentsFetched = await Supabase.instance.client
+  //     .from('payment')
+  //     .select('total_amount')
+  //     .eq('course_id', courseId)
+  //     .withConverter((list) {
+  //         return list.map((data) => data['total_amount'] as int).toList();
+  // });
 
-  final int sumofPayments = paymentsFetched.fold(0, (sum, paymentsFetched) => sum + paymentsFetched);
+  // final int sumofPayments = paymentsFetched.fold(0, (sum, paymentsFetched) => sum + paymentsFetched);
 
-  return sumofPayments;
-  }
+  // return sumofPayments;
+  // }
 
 
 //   Future<Map<String, dynamic>> fetchTotalIncome(int courseId) async {

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:ictc_admin/models/course.dart';
+import 'package:ictc_admin/models/expense.dart';
 import 'package:ictc_admin/models/payment.dart';
 import 'package:ictc_admin/models/program.dart';
 import 'package:ictc_admin/models/trainer.dart';
@@ -14,16 +15,16 @@ import 'package:file_picker/file_picker.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
-class ReceiptForm extends StatefulWidget {
-  const ReceiptForm({super.key, this.payment,});
+class ExpensesReceiptForm extends StatefulWidget {
+  const ExpensesReceiptForm({super.key, this.expense,});
 
-  final Payment? payment;
+  final Expense? expense;
 
   @override
-  State<ReceiptForm> createState() => _ReceiptFormState();
+  State<ExpensesReceiptForm> createState() => _ExpensesReceiptFormState();
 }
 
-class _ReceiptFormState extends State<ReceiptForm> {
+class _ExpensesReceiptFormState extends State<ExpensesReceiptForm> {
   late Future<String?> receiptUrl;
 
   @override
@@ -36,7 +37,7 @@ class _ReceiptFormState extends State<ReceiptForm> {
     try {
       final url = await Supabase.instance.client.storage
           .from('receipts')
-          .createSignedUrl('${widget.payment?.id}_p/receipt.png', 60);
+          .createSignedUrl('${widget.expense?.id}_e/expense.png', 60);
       return url;
     } catch (e) {
       return null;
@@ -48,7 +49,7 @@ class _ReceiptFormState extends State<ReceiptForm> {
   try {
     final url = await Supabase.instance.client.storage
         .from('receipts')
-        .createSignedUrl('${widget.payment?.id}_p/receipt.png', 60);
+        .createSignedUrl('${widget.expense?.id}_e/expense.png', 60);
     if (url != null) {
       await launch(url);
     } else {
@@ -87,11 +88,11 @@ class _ReceiptFormState extends State<ReceiptForm> {
                             final supa = Supabase.instance.client;
           
                             print(
-                                "${widget.payment?.id}_p/receipt.${image.files.first.extension}");
+                                "${widget.expense?.id}_e/expense.${image.files.first.extension}");
                             await supa.storage
                                 .from('receipts')
                                 .uploadBinary(
-                                    "${widget.payment?.id}_p/receipt.${image.files.first.extension}",
+                                    "${widget.expense?.id}_e/expense.${image.files.first.extension}",
                                     image.files.first.bytes!,
                                     fileOptions: FileOptions(upsert: true))
                                 .whenComplete(() {

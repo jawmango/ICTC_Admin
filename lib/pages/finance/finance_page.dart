@@ -46,7 +46,7 @@ class _FinancePageState extends State<FinancePage>
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: DefaultTabController(
-        length: 4,
+        length: 3,
         child: Scaffold(
           backgroundColor: const Color(0xfff1f5fb),
           appBar: AppBar(

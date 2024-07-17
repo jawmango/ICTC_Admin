@@ -169,7 +169,7 @@ class _TraineesPageState extends State<TraineesPage>
               sortAscending: false,empty: Column(
                 children: [
                   Icon(CupertinoIcons.question_circle, size: 50, color: Colors.grey),
-                  Text('Add a trainees to get started!'),
+                  Text('Add trainees to get started!'),
                 ],
               ),
               showBottomBorder: true,
@@ -225,7 +225,7 @@ class _TraineesPageState extends State<TraineesPage>
           ),
           SizedBox(width: 6),
           Text(
-            'Add a Trainee',
+            'Add a Student',
             style: TextStyle(color: Colors.white),
             textAlign: TextAlign.center,
           ),
