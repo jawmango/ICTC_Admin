@@ -333,6 +333,11 @@ class _ProgramFormState extends State<ProgramForm> {
               )
             );
 
+          supabase
+          .storage
+          .from('programs')
+          .remove(['$id/program.png']);
+
             Navigator.of(context).pop();
 
           }).onError((err, st) {

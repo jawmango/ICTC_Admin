@@ -354,11 +354,11 @@ class _ExpensesFormState extends State<ExpensesForm> {
           Row(
             children: [
               // Expanded(child: SizedBox(child: cancelButton())),
-              // if (widget.expense != null)
-              //   Expanded(
-              //     flex: 1,
-              //     child: SizedBox(child: deleteButton()),
-              //   ),
+              if (widget.expense != null)
+                Expanded(
+                  flex: 1,
+                  child: SizedBox(child: deleteButton()),
+                ),
 
               const SizedBox(width: 10),
               Expanded(
@@ -434,6 +434,12 @@ print(expense.orDate.toString());
           supabase.from('expense').delete().eq('id', id).whenComplete(() {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Delete successful!")));
+
+          supabase
+          .storage
+          .from('receipts')
+          .remove(['${id}_e/expense.png']);
+
 
             Navigator.of(context).pop();
           }).catchError((_) {

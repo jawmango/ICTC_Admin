@@ -674,6 +674,11 @@ class _CourseFormState extends State<CourseForm> {
             ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Delete successful!")));
 
+          supabase
+          .storage
+          .from('images')
+          .remove(['$id/image.png']);
+
             Navigator.of(context).pop();
           }).catchError((_) {
             ScaffoldMessenger.of(context).showSnackBar(

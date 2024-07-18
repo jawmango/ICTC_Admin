@@ -412,7 +412,10 @@ Widget pdfButton() {
       field: 'courseStart',
       readOnly: true,
       filterHintText: 'Search Course',
-      type: PlutoColumnType.text(),
+      type: PlutoColumnType.date(
+        format: 'yyyy-MM-dd',
+
+      ),
       textAlign: PlutoColumnTextAlign.right,
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
@@ -433,6 +436,7 @@ Widget pdfButton() {
     PlutoColumn(
       title: 'Training Fee',
       field: 'trainingFee',
+      width: 195,
       readOnly: true,
       filterWidget: Container(
         color: Colors.white,
@@ -462,7 +466,7 @@ Widget pdfButton() {
           rendererContext: rendererContext,
           type: PlutoAggregateColumnType.sum,
           format: 'P#,###',
-          alignment: Alignment.center,
+          alignment: Alignment.centerRight,
           titleSpanBuilder: (text) {
             return [
               const TextSpan(
@@ -482,6 +486,7 @@ Widget pdfButton() {
       minWidth: 50,
       width: 120,
       enableEditingMode: false,
+      enableSorting: true,
     ),
     PlutoColumn(
       title: 'Amount',
@@ -498,7 +503,7 @@ Widget pdfButton() {
           rendererContext: rendererContext,
           type: PlutoAggregateColumnType.sum,
           format: 'P#,###',
-          alignment: Alignment.center,
+          alignment: Alignment.centerRight,
           titleSpanBuilder: (text) {
             return [
               const TextSpan(
@@ -517,6 +522,7 @@ Widget pdfButton() {
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
       enableDropToResize: false,
+      enableSorting: true,
       minWidth: 50,
       width: 120,
     ),
@@ -571,7 +577,7 @@ Widget pdfButton() {
         'name': PlutoCell(value: student.toString()),
         'progName': PlutoCell(value: program.title),
         'courseName': PlutoCell(value: course.title),
-        'courseStart': PlutoCell(value: DateFormat('yyyy-MMM-dd').format(course.startDate)),
+        'courseStart': PlutoCell(value: course.startDate),
         'trainingFee': PlutoCell(value: course.cost),
         'discount': PlutoCell(value: payment.discount),
         'amount': PlutoCell(value: payment.totalAmount),
@@ -675,6 +681,11 @@ Widget pdfButton() {
                         }
                       },
                       configuration: PlutoGridConfiguration(
+                        style: const PlutoGridStyleConfig(
+                          
+
+
+                        ),
                         columnFilter: PlutoGridColumnFilterConfig(
                           filters: const [
                             ...FilterHelper.defaultFilters,

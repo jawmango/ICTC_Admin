@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ictc_admin/pages/NetIncome/netIncome_page.dart';
 import 'package:ictc_admin/pages/courses/courses_page.dart';
 import 'package:ictc_admin/pages/dashboard/dashboard_page.dart';
 import 'package:ictc_admin/pages/finance/finance_page.dart';
@@ -11,6 +12,7 @@ import 'package:ictc_admin/pages/Vouchers/vouchers_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:ictc_admin/pages/courses/course_history.dart';
 import 'package:ictc_admin/pages/programs/program_history.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 class MainScreen extends StatefulWidget {
@@ -24,21 +26,31 @@ class _MainScreenState extends State<MainScreen> {
   @override
   void initState() {
     super.initState();
+    _loadSelectedIndex();
   }
 
   int _selectedIndex = 0;
-  PageController pageController = PageController(
-    keepPage: true,
-  );
+  PageController pageController = PageController();
 
   SearchController searchController = SearchController();
 
-  void onDestinationChanged(int value) {
+   Future<void> _loadSelectedIndex() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    setState(() {
+      _selectedIndex = prefs.getInt('selectedIndex') ?? 0; // default to 0 if not found
+    });
+    pageController.jumpToPage(_selectedIndex);
+  }
+
+  void onDestinationChanged(int value) async {
     setState(() {
       _selectedIndex = value;
       pageController.animateToPage(value,
           duration: const Duration(milliseconds: 400), curve: Curves.ease);
     });
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setInt('selectedIndex', value); // save the selected index
+    
   }
 
   void logout() async {
@@ -53,6 +65,7 @@ class _MainScreenState extends State<MainScreen> {
       "List of Students",
       "List of Programs",
       "List of Courses",
+      "Net Income",
       // "List of Vouchers",
     ];
 
@@ -68,6 +81,7 @@ class _MainScreenState extends State<MainScreen> {
       const TraineesPage(),
       const ProgramsPage(),
       const CoursesPage(),
+      // const NetIncomePage(),
       // const VouchersPage(),
     ];
 
@@ -194,6 +208,26 @@ class _MainScreenState extends State<MainScreen> {
       ),
       // NavigationRailDestination(
       //   icon: Icon(
+      //     Icons.playlist_add_check_circle_outlined,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   selectedIcon: Icon(
+      //     Icons.playlist_add_check_circle_rounded,
+      //     color: Colors.white,
+      //     size: 30,
+      //   ),
+      //   label: Text(
+      //     "Net Income",
+      //     style: TextStyle(
+      //       fontSize: 16,
+      //       fontWeight: FontWeight.w400,
+      //       color: Colors.white,
+      //     ),
+      //   ),
+      // ),
+      // NavigationRailDestination(
+      //   icon: Icon(
       //     Icons.book_outlined,
       //     color: Colors.white,
       //     size: 30,
@@ -273,6 +307,8 @@ class _MainScreenState extends State<MainScreen> {
         return "program";
       case 5:
         return "course";
+      // case 6:
+      //   return "net";
       // case 6:
       //   return "vouchers";
       default:
@@ -370,17 +406,20 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
+  
+
   NavigationRail buildNavRail(List<NavigationRailDestination> destinations) {
     return NavigationRail(
       backgroundColor: const Color(0xff19306B),
       destinations: destinations,
       selectedIndex: _selectedIndex,
       onDestinationSelected: (int value) {
-        setState(() {
-          _selectedIndex = value;
-          pageController.animateToPage(value,
-              duration: const Duration(milliseconds: 400), curve: Curves.ease);
-        });
+        // setState(() {
+        //   _selectedIndex = value;
+        //   pageController.animateToPage(value,
+        //       duration: const Duration(milliseconds: 400), curve: Curves.ease);
+        // });
+        onDestinationChanged(value);
       },
       useIndicator: false,
       extended: true,
