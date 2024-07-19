@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
       "List of Students",
       "List of Programs",
       "List of Courses",
-      "Net Income",
+      // "Net Income",
       // "List of Vouchers",
     ];
 
