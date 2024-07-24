@@ -86,8 +86,6 @@ Widget build(BuildContext context) {
         backgroundColor: const Color(0xfff1f5fb),
         appBar: AppBar(
           backgroundColor: const Color(0xfff1f5fb),
-          title: const Text('Dashboard'),
-          centerTitle: true,
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Upcoming Courses'),

@@ -65,7 +65,7 @@ class _MainScreenState extends State<MainScreen> {
       "List of Students",
       "List of Programs",
       "List of Courses",
-      "Net Income",
+      // "Net Income",
       // "List of Vouchers",
     ];
 
@@ -367,7 +367,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: const Row(
                     children: [
                       Text(
-                        "",
+                        "Dashboard",
                         style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w700,
