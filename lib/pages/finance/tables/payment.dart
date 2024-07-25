@@ -387,6 +387,7 @@ Widget pdfButton() {
       enableDropToResize: false,
       titleTextAlign: PlutoColumnTextAlign.center,
       enableEditingMode: false,
+      sort: PlutoColumnSort.ascending,
     ),
     PlutoColumn(
       title: 'Program Name',
