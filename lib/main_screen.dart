@@ -367,7 +367,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: const Row(
                     children: [
                       Text(
-                        "",
+                        "Dashboard",
                         style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.w700,

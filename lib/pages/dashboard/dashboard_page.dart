@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:ictc_admin/models/course.dart';
 import 'package:ictc_admin/models/payment.dart';
 import 'package:ictc_admin/pages/courses/course_details.dart';
+import 'package:ictc_admin/pages/dashboard/ads_image.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -86,8 +87,7 @@ Widget build(BuildContext context) {
         backgroundColor: const Color(0xfff1f5fb),
         appBar: AppBar(
           backgroundColor: const Color(0xfff1f5fb),
-          title: const Text('Dashboard'),
-          centerTitle: true,
+          actions: [imageButton(), SizedBox(width:50),],
           bottom: const TabBar(
             tabs: [
               Tab(text: 'Upcoming Courses'),
@@ -344,18 +344,12 @@ Widget build(BuildContext context) {
                           style: const TextStyle(
                               color: Colors.yellow,
                               fontWeight: FontWeight.bold,
-                              fontSize: 15,
+                              fontSize: 18,
                               fontFamily: 'Archivo'),
                         );
                       },
                     ),
-                    const Text(
-                      "Students",
-                      style: TextStyle(
-                          fontWeight: FontWeight.w500,
-                          fontSize: 7,
-                          color: Colors.white),
-                    ),
+                    const SizedBox(height: 10, width: 10),
                   ],
                 ),
               ),
@@ -481,6 +475,80 @@ Widget build(BuildContext context) {
           ],
         ),
       ],
+    );
+  }
+
+  Widget imageButton()
+  {
+    return TextButton(
+        onPressed: () {
+          showDialog(
+            context: context,
+            builder: (context) {
+              return imageDialog();
+            },
+          );
+        },
+        child: const Row(
+          children: [
+            Icon(
+              Icons.image,
+              size: 20,
+              color: Color(0xff153faa),
+            ),
+            SizedBox(
+              width: 5,
+            ),
+            Text("Advertisment Image"),
+          ],
+        ));
+  }
+
+  Widget imageDialog() {
+    return AlertDialog(
+      // shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(30))),
+      contentPadding: const EdgeInsets.only(left: 20, right: 30, top: 40),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: FractionalOffset.topRight,
+            child: IconButton(
+              onPressed: () {
+                Navigator.of(context, rootNavigator: true).pop(imageDialog);
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+          const Text(
+            "Advertistment Image",
+            style: TextStyle(
+                color: Colors.black87,
+                fontSize: 24,
+                fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+      content: Flexible(
+        flex: 2,
+        child: SizedBox(
+          width: 550,
+          height: MediaQuery.of(context).size.height * 0.9,
+          child: const Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  AdsImageForm(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
