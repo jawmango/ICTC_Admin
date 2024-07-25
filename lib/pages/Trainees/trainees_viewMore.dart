@@ -1,5 +1,4 @@
 import 'package:data_table_2/data_table_2.dart';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:ictc_admin/models/trainee.dart';
@@ -34,7 +33,6 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
     }
   }
 
-
   Future<String> fetchCourseTitle(int courseId) async {
     final response = await Supabase.instance.client
         .from('course')
@@ -58,14 +56,14 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
         .select()
         .eq('student_id', widget.trainee.id!)
         .withConverter((data) {
-          
-          print(data);
-          return data.map((e) => Register.fromJson(e)).toList();
-        });
+      print(data);
+      return data.map((e) => Register.fromJson(e)).toList();
+    });
 
-        super.initState();
+    super.initState();
   }
-   @override
+
+  @override
   Widget build(BuildContext context) {
     return FutureBuilder<List<Register>>(
       future: courseStudents,
@@ -104,12 +102,12 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
   Widget traineeHeader() {
     return Container(
       decoration: const BoxDecoration(
-          // border: Border(bottom: BorderSide(width: 1)),
-          // color: Color(0xfff1f5fb),
-          // color: Color(0xff19306B),
-          color: Colors.white,
-          borderRadius: BorderRadius.only(
-              topRight: Radius.circular(24), topLeft: Radius.circular(24))),
+        color: Colors.white,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(24),
+          topLeft: Radius.circular(24),
+        ),
+      ),
       padding: const EdgeInsets.only(top: 50, left: 25, right: 25, bottom: 25),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
@@ -135,30 +133,29 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
                       final url = snapshot.data;
                       print(url);
                       return ClipOval(
-                          child: url != null
-                              ? Image.network(
-                                  url,
-                                  width: 200,
-                                  height: 200,
-                                  fit: BoxFit.cover,
-                                )
-                              : const Icon(Icons.person));
+                        child: url != null
+                            ? Image.network(
+                                url,
+                                width: 200,
+                                height: 200,
+                                fit: BoxFit.cover,
+                              )
+                            : const Icon(Icons.person),
+                      );
                     },
                   ),
                 ),
               ),
               const SizedBox(
-                //spacing
                 height: 12,
               ),
               Text(
-                softWrap: true,
-                //name
                 widget.trainee.toString(),
                 style: const TextStyle(
-                    fontSize: 24,
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w700),
+                  fontSize: 24,
+                  color: Colors.black87,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
               const SizedBox(
                 height: 35,
@@ -168,82 +165,76 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   const Text(
-                    softWrap: true,
-                    //name
                     "Contact",
                     style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.black87,
-                        fontWeight: FontWeight.w600),
+                      fontSize: 16,
+                      color: Colors.black87,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  //email
                   Padding(
                     padding: const EdgeInsets.only(left: 13.0),
                     child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.mail_outline,
-                            size: 24,
-                            weight: 0.5,
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Email",
-                                style: TextStyle(
-                                    color: Colors.black87,
-                                    fontWeight: FontWeight.w300),
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.mail_outline,
+                          size: 24,
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Email",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w300,
                               ),
-                              Text(widget.trainee.email),
-                            ],
-                          ),
-                        ]),
+                            ),
+                            Text(widget.trainee.email),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                   const SizedBox(
                     height: 20,
                   ),
-                  //contact number
                   Padding(
                     padding: const EdgeInsets.only(left: 13.0),
                     child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          const Icon(
-                            Icons.phone_outlined,
-                            size: 24,
-                            weight: 0.5,
-                          ),
-                          const SizedBox(
-                            width: 12,
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: [
-                              const Text(
-                                "Phone",
-                                style: TextStyle(
-                                  color: Colors.black87,
-                                  fontWeight: FontWeight.w300,
-                                ),
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        const Icon(
+                          Icons.phone_outlined,
+                          size: 24,
+                        ),
+                        const SizedBox(
+                          width: 12,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              "Phone",
+                              style: TextStyle(
+                                color: Colors.black87,
+                                fontWeight: FontWeight.w300,
                               ),
-                              Text(widget.trainee.contactNumber ??
-                                  'No contact number'),
-
-                            ],
-                          ),
-                        ]),
+                            ),
+                            Text(widget.trainee.contactNumber ?? 'No contact number'),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
@@ -251,8 +242,6 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
           ),
         ],
       ),
-      // ],
-      // ),
     );
   }
 
@@ -266,13 +255,12 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const Text(
-              softWrap: true,
-              //name
               "Courses",
               style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black87,
-                  fontWeight: FontWeight.w600),
+                fontSize: 16,
+                color: Colors.black87,
+                fontWeight: FontWeight.w600,
+              ),
             ),
             const SizedBox(
               height: 15,
@@ -287,12 +275,13 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
                     future: fetchCourseTitle(registerItem.courseId),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
-                        return const Center(child: const CircularProgressIndicator());
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
                       } else if (snapshot.hasError) {
-                        return Text(
-                            'Error in future builder string: ${snapshot.error}');
+                        return Text('Error: ${snapshot.error}');
                       } else {
-                        return traineeCourseCard(snapshot.data!);
+                        return traineeCourseCard(snapshot.data!, registerItem.cert);
                       }
                     },
                   );
@@ -303,11 +292,12 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
           ],
         ),
       ),
+    );
+  }
 
-  );
-}
+  Widget traineeCourseCard(String courseTitle, bool certStatus) {
+    Color borderColor = certStatus ? Colors.green : Colors.red;
 
-  Widget traineeCourseCard(String courseTitle) {
     return Container(
       margin: const EdgeInsets.only(bottom: 2),
       padding: const EdgeInsets.all(0),
@@ -316,10 +306,11 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
         height: 60,
         child: Card(
           elevation: 0.5,
-          shape: const RoundedRectangleBorder(
-              side: BorderSide(color: Colors.white70),
-              borderRadius: BorderRadius.all(Radius.circular(10))),
-          color: Colors.white,surfaceTintColor: Colors.white,
+          shape: RoundedRectangleBorder(
+            side: BorderSide(color: borderColor),
+            borderRadius: BorderRadius.all(Radius.circular(10)),
+          ),
+          color: Colors.white,
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
             child: Row(
@@ -327,7 +318,7 @@ class _TraineeViewMoreState extends State<TraineeViewMore> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Icon(CupertinoIcons.book, color: Colors.black, size: 20,),
-                SizedBox(width:15),
+                SizedBox(width: 15),
                 Text(
                   courseTitle,
                   style: const TextStyle(
