@@ -124,7 +124,7 @@ class _AdsImageFormState extends State<AdsImageForm> {
           // Container for displaying uploaded image
           Container(
             margin: EdgeInsets.only(bottom: 10),
-            width: MediaQuery.of(context).size.width * 0.5,
+            width: MediaQuery.of(context).size.width,
             height: MediaQuery.of(context).size.height * 0.7,
             decoration: BoxDecoration(
               color: Colors.white,
@@ -161,10 +161,46 @@ class _AdsImageFormState extends State<AdsImageForm> {
               },
             ),
           ),
+          deleteButton(),
         ],
       ),
     );
   }
+
+   Widget deleteButton() {
+    return FilledButton(
+        style: ButtonStyle(
+          backgroundColor: MaterialStateProperty.resolveWith((states) {
+            if (states.contains(MaterialState.pressed)) {
+              return Colors.white70;
+            }
+            return const Color.fromARGB(255, 226, 226, 226);
+          }),
+        ),
+        onPressed: () {
+          final supabase = Supabase.instance.client;
+
+          supabase
+          .storage
+          .from('images')
+          .remove(['advertisment/ads.png'])
+          .whenComplete(() {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Delete successful!")));
+
+            Navigator.of(context).pop();
+          }).catchError((_) {
+            ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("An error occured.")));
+          });
+        },
+        child: const Text(
+          "Delete",
+          style: TextStyle(color: Colors.black87),
+        ));
+  }
+
+  
 }
 
 
