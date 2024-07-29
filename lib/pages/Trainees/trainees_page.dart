@@ -196,7 +196,12 @@ class _TraineesPageState extends State<TraineesPage>
       // const DataCell(Text('Advance Figma')),
       const DataCell(Text('')),
       DataCell(Row(
-        children: [viewButton(trainee)],
+        children: [
+          viewButton(trainee),
+          editButton(trainee),
+          
+          
+          ],
       )),
     ]);
   }
@@ -273,6 +278,86 @@ class _TraineesPageState extends State<TraineesPage>
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   TraineesForm(),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+  Widget editButton(Trainee trainee) {
+  // Check if the email is 'none'
+  if (trainee.email == 'none') {
+    return TextButton(
+      onPressed: () {
+        showDialog(
+          context: context,
+          builder: (context) {
+            return editDialog(trainee);
+          },
+        );
+      },
+      child: const Row(
+        children: [
+          Icon(
+            Icons.edit,
+            size: 20,
+            color: Color(0xff153faa),
+          ),
+          SizedBox(
+            width: 5,
+          ),
+          Text("Edit"),
+        ],
+      ),
+    );
+  } else {
+    // Return an empty widget if the condition is not met
+    return SizedBox.shrink();
+  }
+}
+
+
+  Widget editDialog(Trainee trainee) {
+    return AlertDialog(
+      // shape: const RoundedRectangleBorder(
+      //     borderRadius: BorderRadius.all(Radius.circular(30))),
+      contentPadding: const EdgeInsets.only(left: 20, right: 30, top: 40),
+      title: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Container(
+            alignment: FractionalOffset.topRight,
+            child: IconButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              icon: const Icon(Icons.clear),
+            ),
+          ),
+          const Text(
+            "Edit a Student",
+            style: TextStyle(
+                color: Colors.black87,
+                fontSize: 24,
+                fontWeight: FontWeight.w600),
+          ),
+        ],
+      ),
+      content: Flexible(
+        flex: 2,
+        child: SizedBox(
+          width: 500,
+          height: MediaQuery.of(context).size.height * 0.28,
+          child: Padding(
+            padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+            child: SingleChildScrollView(
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  TraineesForm(trainee: trainee),
                 ],
               ),
             ),
